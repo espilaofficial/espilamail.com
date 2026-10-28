@@ -32,7 +32,8 @@ header{width:100%;padding:12px 28px 0;display:flex;justify-content:flex-end}
 .lang button{background:none;border:0;font:inherit;font-weight:700;color:#4A4A4A;min-height:36px;padding:0 6px;cursor:pointer}
 .lang button[aria-pressed="true"]{color:var(--accent);font-weight:800}
 .lang span{color:#D4D4D4}
-main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;display:flex;flex-direction:column;align-items:center;gap:24px}
+main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+@media (min-height:640px) and (min-width:641px){main{padding-bottom:120px}}
 .brand{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
 .brand-row{display:flex;align-items:baseline;gap:8px}
 .logo{font-size:52px;font-weight:900;letter-spacing:-.02em;line-height:1.05;color:var(--accent)}
@@ -83,10 +84,10 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
 .status{font-size:12px;line-height:1.5;text-align:center;color:#2E6B3A;display:none}
 .status.show{display:block}
 .status.err{color:#B3261E}
-footer{padding:6px 16px 22px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+footer{padding:4px 16px 22px;display:flex;flex-direction:column;align-items:center;gap:0;text-align:center}
 footer::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(214,206,236,0) 0%,#D6CEEC 25%,#D6CEEC 75%,rgba(214,206,236,0) 100%)}
 footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 14px;font-size:12px}
-footer nav a{color:var(--muted);min-height:28px;display:inline-flex;align-items:center}
+footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:center}
 .copy{font-size:12px;color:var(--soft)}
 @media (max-width:640px){
   .logo{font-size:42px}
