@@ -37,12 +37,12 @@ main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;disp
 .brand-row{display:flex;align-items:baseline;gap:8px}
 .logo{font-size:52px;font-weight:900;letter-spacing:-.02em;line-height:1.05;color:var(--accent)}
 .mail{position:relative;font-size:16px;font-weight:600;color:var(--muted)}
-.tm{font-size:9px;font-weight:600;color:#9A9A9A;margin-left:1px;vertical-align:super;line-height:0}
+.tm{font-size:12px;font-weight:600;color:#9A9A9A;margin-left:1px;vertical-align:super;line-height:0}
 .seed{position:absolute;left:100%;bottom:70%;margin-left:2px;background:none;border:0;padding:4px;cursor:help;line-height:0}
 .seed img{width:8px;height:8px;opacity:.8}
 .seed .tip{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:4px;white-space:nowrap;background:#fff;border:1px solid var(--card-line);border-radius:8px;padding:6px 10px;font-size:11px;line-height:1.4;color:var(--muted);box-shadow:0 4px 14px rgba(43,43,43,.08);opacity:0;visibility:hidden;transition:opacity .15s}
 .seed:hover .tip,.seed:focus .tip{opacity:1;visibility:visible}
-.tagline{font-size:16px;color:var(--muted)}
+.tagline{font-size:12px;color:var(--muted)}
 .cards{width:100%;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify-content:center}
 .card{flex:1 1 280px;max-width:320px;background:rgba(255,255,255,.94);border:1px solid var(--card-line);border-radius:14px;padding:24px 22px;display:flex;flex-direction:column;gap:14px}
 .card h1,.card h2{font-size:18px;font-weight:700}
@@ -71,18 +71,20 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
 .btn-outline{background:#fff;color:var(--accent);border:1px solid var(--accent)}
 .btn-outline:hover{background:#F6F1FF}
 .note{font-size:12px;color:var(--muted);line-height:1.6;text-align:center}
+.note a,.fine a{color:#5A16C4;font-weight:600}
+.note a:hover,.fine a:hover{color:#45109A}
 .fine{font-size:11px;color:#757575;line-height:1.6;text-align:center}
 .status{font-size:12px;line-height:1.5;text-align:center;color:#2E6B3A;display:none}
 .status.show{display:block}
 .status.err{color:#B3261E}
-footer{padding:8px 16px 22px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+footer{padding:6px 16px 22px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
 footer::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(214,206,236,0) 0%,#D6CEEC 25%,#D6CEEC 75%,rgba(214,206,236,0) 100%)}
 footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 14px;font-size:12px}
 footer nav a{color:var(--muted);min-height:28px;display:inline-flex;align-items:center}
 .copy{font-size:12px;color:var(--soft)}
 @media (max-width:640px){
   .logo{font-size:42px}
-  .tagline{font-size:14px}
+  .tagline{font-size:11px}
   .copy{font-size:11px}
   .card{padding:20px 18px}
   header{padding:10px 16px 0}
@@ -186,9 +188,9 @@ footer nav a{color:var(--muted);min-height:28px;display:inline-flex;align-items:
   var T = {
     hi: {
       seedTip: "बीज चरण — कुछ नया उग रहा है…",
-      signinTitle: "साइन इन", signinSub: "आपके इनबॉक्स में स्वागत है।", signinBtn: "साइन इन",
-      forgot: "पासवर्ड भूल गए? लिखें:", newHere: "नए हैं? Espila Mail सिर्फ़ निमंत्रण से मिलता है।",
-      requestLink: "निमंत्रण माँगें", back: "← साइन इन पर वापस", reqTitle: "निमंत्रण माँगें", reqSub: "हम हर अनुरोध खुद देखते हैं।",
+      signinTitle: "साइन इन", signinSub: "आपके इनबॉक्स में आपका स्वागत है।", signinBtn: "साइन इन",
+      forgot: "पासवर्ड भूल गए? लिखें:", newHere: "नए हैं? Espila Mail से जुड़ना सिर्फ़ निमंत्रण से होता है।",
+      requestLink: "निमंत्रण के लिए अनुरोध करें", back: "← साइन इन पर वापस", reqTitle: "निमंत्रण के लिए अनुरोध", reqSub: "हम हर अनुरोध खुद देखते हैं।",
       fName: "पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
       fRef: "किसने भेजा", optional: "(वैकल्पिक)", send: "अनुरोध भेजें",
       agree: "भेजकर आप हमारी", terms: "शर्तें", and: "और", privacy: "गोपनीयता नीति",
