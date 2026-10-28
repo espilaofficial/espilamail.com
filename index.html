@@ -37,6 +37,7 @@ main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;disp
 .brand-row{display:flex;align-items:baseline;gap:8px}
 .logo{font-size:52px;font-weight:900;letter-spacing:-.02em;line-height:1.05;color:var(--accent)}
 .mail{position:relative;font-size:16px;font-weight:600;color:var(--muted)}
+.tm{font-size:9px;font-weight:600;color:#9A9A9A;margin-left:1px;vertical-align:super;line-height:0}
 .seed{position:absolute;left:100%;bottom:70%;margin-left:2px;background:none;border:0;padding:4px;cursor:help;line-height:0}
 .seed img{width:8px;height:8px;opacity:.8}
 .seed .tip{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:4px;white-space:nowrap;background:#fff;border:1px solid var(--card-line);border-radius:8px;padding:6px 10px;font-size:11px;line-height:1.4;color:var(--muted);box-shadow:0 4px 14px rgba(43,43,43,.08);opacity:0;visibility:hidden;transition:opacity .15s}
@@ -63,7 +64,7 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
 .addr:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(123,44,245,.10)}
 .addr span{display:flex;align-items:center;padding:0 10px;color:var(--muted);font-size:12px;white-space:nowrap;border-left:1px solid var(--card-line);background:#FAF9FC}
 .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.btn{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:8px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn{display:flex;align-items:center;justify-content:center;min-height:34px;border-radius:8px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
 .btn:hover{text-decoration:none}
 .btn-primary{background:var(--accent);color:#fff;border:0}
 .btn-primary:hover{background:var(--accent-dark);color:#fff}
@@ -74,7 +75,7 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
 .status{font-size:12px;line-height:1.5;text-align:center;color:#2E6B3A;display:none}
 .status.show{display:block}
 .status.err{color:#B3261E}
-footer{padding:16px 16px 22px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+footer{padding:8px 16px 22px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
 footer::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(214,206,236,0) 0%,#D6CEEC 25%,#D6CEEC 75%,rgba(214,206,236,0) 100%)}
 footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 14px;font-size:12px}
 footer nav a{color:var(--muted);min-height:28px;display:inline-flex;align-items:center}
@@ -107,7 +108,7 @@ footer nav a{color:var(--muted);min-height:28px;display:inline-flex;align-items:
     <div class="brand">
       <div class="brand-row">
         <span class="logo">Espila</span>
-        <span class="mail">Mail<button type="button" class="seed" aria-label="Seed phase"><img src="seed.png" alt=""><span class="tip" data-t="seedTip">Seed phase · Seed → Sprout → Blossom</span></button></span>
+        <span class="mail">Mail<sup class="tm" aria-label="trademark">™</sup><button type="button" class="seed" aria-label="Seed phase — something is growing"><img src="seed.png" alt=""><span class="tip" data-t="seedTip">Seed phase — something is growing…</span></button></span>
       </div>
       <p class="tagline">Today, Tomorrow &amp; Beyond...</p>
     </div>
@@ -184,7 +185,7 @@ footer nav a{color:var(--muted);min-height:28px;display:inline-flex;align-items:
 
   var T = {
     hi: {
-      seedTip: "बीज चरण · बीज → अंकुर → फूल",
+      seedTip: "बीज चरण — कुछ नया उग रहा है…",
       signinTitle: "साइन इन", signinSub: "आपके इनबॉक्स में स्वागत है।", signinBtn: "साइन इन",
       forgot: "पासवर्ड भूल गए? लिखें:", newHere: "नए हैं? Espila Mail सिर्फ़ निमंत्रण से मिलता है।",
       requestLink: "निमंत्रण माँगें", back: "← साइन इन पर वापस", reqTitle: "निमंत्रण माँगें", reqSub: "हम हर अनुरोध खुद देखते हैं।",
