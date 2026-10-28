@@ -27,7 +27,7 @@ a:hover{color:var(--accent-dark);text-decoration:underline}
 .flora-tr{right:0;top:0;width:440px}
 .flora-bl{left:0;bottom:0;width:400px}
 header,main,footer{position:relative;z-index:1}
-header{width:100%;max-width:860px;margin:0 auto;padding:10px 16px 0;display:flex;justify-content:flex-end}
+header{width:100%;padding:12px 28px 0;display:flex;justify-content:flex-end}
 .lang{display:flex;align-items:center;font-size:12px}
 .lang button{background:none;border:0;font:inherit;color:var(--muted);min-height:36px;padding:0 6px;cursor:pointer}
 .lang button[aria-pressed="true"]{color:var(--accent);font-weight:700}
@@ -38,13 +38,14 @@ main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;disp
 .logo{font-size:52px;font-weight:900;letter-spacing:-.02em;line-height:1.05;color:var(--accent)}
 .mail{position:relative;font-size:16px;font-weight:600;color:var(--muted)}
 .seed{position:absolute;left:100%;bottom:70%;margin-left:2px;background:none;border:0;padding:4px;cursor:help;line-height:0}
-.seed img{width:13px;height:13px;opacity:.85}
+.seed img{width:10px;height:10px;opacity:.8}
 .seed .tip{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:4px;white-space:nowrap;background:#fff;border:1px solid var(--card-line);border-radius:8px;padding:6px 10px;font-size:11px;line-height:1.4;color:var(--muted);box-shadow:0 4px 14px rgba(43,43,43,.08);opacity:0;visibility:hidden;transition:opacity .15s}
 .seed:hover .tip,.seed:focus .tip{opacity:1;visibility:visible}
 .tagline{font-size:16px;color:var(--muted)}
 .cards{width:100%;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify-content:center}
 .card{flex:1 1 280px;max-width:320px;background:rgba(255,255,255,.94);border:1px solid var(--card-line);border-radius:14px;padding:24px 22px;display:flex;flex-direction:column;gap:14px}
 .card h1,.card h2{font-size:18px;font-weight:700}
+.card-center>div:first-child{text-align:center}
 .sub{font-size:12px;color:var(--muted);line-height:1.5}
 form{display:flex;flex-direction:column;gap:10px}
 .field{display:flex;flex-direction:column;gap:4px}
@@ -79,6 +80,7 @@ footer nav a{color:var(--muted);min-height:28px;display:inline-flex;align-items:
   .tagline{font-size:14px}
   .copy{font-size:11px}
   .card{padding:20px 18px}
+  header{padding:10px 16px 0}
   .flora-tr{width:230px}
   .flora-bl{width:210px}
 }
@@ -107,7 +109,7 @@ footer nav a{color:var(--muted);min-height:28px;display:inline-flex;align-items:
     </div>
 
     <div class="cards">
-      <section class="card" aria-labelledby="signin-title">
+      <section class="card card-center" aria-labelledby="signin-title">
         <div>
           <h1 id="signin-title" data-t="signinTitle">Sign in</h1>
           <p class="sub" data-t="signinSub">Welcome to your inbox.</p>
