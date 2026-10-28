@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --accent:#7B2CF5; --accent-dark:#5A16C4;
+  --accent:#7B2CF5; --accent-dark:#5A16C4; --accent-deep:#45109A; --ring:rgba(123,44,245,.10); --flora-filter:none;
   --text:#2B2B2B; --muted:#666666; --label:#555555; --soft:#8A8A8A;
   --line:#E3E0EA; --card-line:#EEEAF5; --bg:#FBFAFE;
 }
@@ -23,7 +23,7 @@ body{font-family:'Nunito','Noto Sans Devanagari',system-ui,sans-serif;color:var(
 a{color:var(--accent);text-decoration:none}
 a:hover{color:var(--accent-dark);text-decoration:underline}
 .page{position:relative;overflow:hidden;min-height:100vh;display:flex;flex-direction:column}
-.flora{position:absolute;height:auto;z-index:0;pointer-events:none;opacity:.33}
+.flora{position:absolute;height:auto;z-index:0;pointer-events:none;opacity:.33;filter:var(--flora-filter)}
 .flora-tr{right:0;top:0;width:440px}
 .flora-bl{left:0;bottom:0;width:400px}
 header,main,footer{position:relative;z-index:1}
@@ -62,11 +62,11 @@ label{font-size:12px;font-weight:600;color:var(--label)}
 label small{font-weight:400;color:var(--soft);font-size:12px}
 input{width:100%;min-width:0;min-height:38px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:#fff;font:inherit;font-size:14px;color:var(--text)}
 input::placeholder{color:#ABABAB}
-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(123,44,245,.10)}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
 .addr{display:flex;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}
 .addr input{border:0;border-radius:0}
 .addr input:focus{box-shadow:none}
-.addr:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(123,44,245,.10)}
+.addr:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
 .addr span{display:flex;align-items:center;padding:0 10px;color:var(--muted);font-size:12px;white-space:nowrap;border-left:1px solid var(--card-line);background:#FAF9FC}
 .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .btn{display:flex;align-items:center;justify-content:center;min-height:30px;border-radius:8px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
@@ -76,8 +76,8 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(12
 .btn-outline{background:#fff;color:var(--accent);border:1px solid var(--accent)}
 .btn-outline:hover{background:#F6F1FF}
 .note{font-size:12px;color:var(--muted);line-height:1.6;text-align:center}
-.note a,.fine a{color:#5A16C4;font-weight:600}
-.note a:hover,.fine a:hover{color:#45109A}
+.note a,.fine a{color:var(--accent-dark);font-weight:600}
+.note a:hover,.fine a:hover{color:var(--accent-deep)}
 .family{padding-top:6px;border-top:1px solid var(--card-line)}
 .family a{font-size:13px;font-weight:700}
 .family a{position:relative}
@@ -191,6 +191,30 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 </div>
 
 <script>
+// Day-of-week colours (वार के रंग). ?day=0..6 previews a day (0 = Sunday).
+(function () {
+  var DAYS = [
+    { a: "#D9480F", d: "#B03A0B", x: "#8A2E08", h: 140 },  // रविवार – सूर्य – केसरिया
+    { a: "#3B6E9E", d: "#2C5679", x: "#1F3E58", h: -55, s: 0.6 }, // सोमवार – चंद्र – चाँदी-नीला
+    { a: "#C62828", d: "#A11F1F", x: "#7A1717", h: 105 },  // मंगलवार – मंगल – लाल
+    { a: "#2E7D32", d: "#236127", x: "#18461B", h: -135 }, // बुधवार – बुध – हरा
+    { a: "#A16207", d: "#7F4D05", x: "#5E3904", h: 150 },  // गुरुवार – बृहस्पति – पीला/सुनहरा
+    { a: "#C2185B", d: "#9C1349", x: "#740E36", h: 65 },   // शुक्रवार – शुक्र – गुलाबी
+    { a: "#7B2CF5", d: "#5A16C4", x: "#45109A", h: 0 }     // शनिवार – शनि – बैंगनी (Espila का मूल रंग)
+  ];
+  var day = new Date().getDay();
+  var m = /[?&]day=([0-6])/.exec(location.search);
+  if (m) day = +m[1];
+  var c = DAYS[day], r = document.documentElement.style;
+  r.setProperty("--accent", c.a);
+  r.setProperty("--accent-dark", c.d);
+  r.setProperty("--accent-deep", c.x);
+  var rgb = [1, 3, 5].map(function (i) { return parseInt(c.a.substr(i, 2), 16); }).join(",");
+  r.setProperty("--ring", "rgba(" + rgb + ",.12)");
+  r.setProperty("--flora-filter", "hue-rotate(" + c.h + "deg) saturate(" + (c.s || 1.1) + ")");
+  var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute("content", c.a);
+})();
+
 (function () {
   // Where invitation requests go. Leave FORM_ENDPOINT empty to use the visitor's
   // own email app (no third party). Paste a Formspree URL here later if wanted.
