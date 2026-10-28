@@ -3,157 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Espila Mail</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-
+<title>Espila Mail – Today, Tomorrow &amp; Beyond...</title>
+<meta name="description" content="Espila Mail – a calm, private, invitation-only email service.">
+<meta name="theme-color" content="#7B2CF5">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Nunito',sans-serif;
+:root{
+  --accent:#7B2CF5; --accent-dark:#5A16C4;
+  --text:#2B2B2B; --muted:#666666; --label:#555555; --soft:#8A8A8A;
+  --line:#E3E0EA; --card-line:#EEEAF5; --bg:#FBFAFE;
 }
-
-body{
-    background:#ffffff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    padding:20px;
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:'Nunito','Noto Sans Devanagari',system-ui,sans-serif;color:var(--text);background:var(--bg)}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-dark);text-decoration:underline}
+.page{position:relative;overflow:hidden;min-height:100vh;display:flex;flex-direction:column}
+.flora{position:absolute;height:auto;z-index:0;pointer-events:none;opacity:.25}
+.flora-tr{right:0;top:0;width:440px}
+.flora-bl{left:0;bottom:0;width:400px}
+header,main,footer{position:relative;z-index:1}
+header{width:100%;max-width:860px;margin:0 auto;padding:10px 16px 0;display:flex;justify-content:flex-end}
+.lang{display:flex;align-items:center;font-size:12px}
+.lang button{background:none;border:0;font:inherit;color:var(--muted);min-height:36px;padding:0 6px;cursor:pointer}
+.lang button[aria-pressed="true"]{color:var(--accent);font-weight:700}
+.lang span{color:#D4D4D4}
+main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;display:flex;flex-direction:column;align-items:center;gap:24px}
+.brand{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.brand-row{display:flex;align-items:baseline;gap:8px}
+.logo{font-size:52px;font-weight:900;letter-spacing:-.02em;line-height:1.05;color:var(--accent)}
+.mail{position:relative;font-size:16px;font-weight:600;color:var(--muted)}
+.seed{position:absolute;left:100%;bottom:70%;margin-left:2px;background:none;border:0;padding:4px;cursor:help;line-height:0}
+.seed img{width:13px;height:13px;opacity:.85}
+.seed .tip{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:4px;white-space:nowrap;background:#fff;border:1px solid var(--card-line);border-radius:8px;padding:6px 10px;font-size:11px;line-height:1.4;color:var(--muted);box-shadow:0 4px 14px rgba(43,43,43,.08);opacity:0;visibility:hidden;transition:opacity .15s}
+.seed:hover .tip,.seed:focus .tip{opacity:1;visibility:visible}
+.tagline{font-size:16px;color:var(--muted)}
+.cards{width:100%;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify-content:center}
+.card{flex:1 1 280px;max-width:320px;background:rgba(255,255,255,.94);border:1px solid var(--card-line);border-radius:14px;padding:24px 22px;display:flex;flex-direction:column;gap:14px}
+.card h1,.card h2{font-size:18px;font-weight:700}
+.sub{font-size:12px;color:var(--muted);line-height:1.5}
+form{display:flex;flex-direction:column;gap:10px}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:12px;font-weight:600;color:var(--label)}
+label small{font-weight:400;color:var(--soft);font-size:12px}
+input{width:100%;min-width:0;min-height:38px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:#fff;font:inherit;font-size:14px;color:var(--text)}
+input::placeholder{color:#ABABAB}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(123,44,245,.10)}
+.addr{display:flex;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}
+.addr input{border:0;border-radius:0}
+.addr input:focus{box-shadow:none}
+.addr:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(123,44,245,.10)}
+.addr span{display:flex;align-items:center;padding:0 10px;color:var(--muted);font-size:12px;white-space:nowrap;border-left:1px solid var(--card-line);background:#FAF9FC}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:8px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn:hover{text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff;border:0}
+.btn-primary:hover{background:var(--accent-dark);color:#fff}
+.btn-outline{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:hover{background:#F6F1FF}
+.note{font-size:12px;color:var(--muted);line-height:1.6;text-align:center}
+.fine{font-size:11px;color:#757575;line-height:1.6;text-align:center}
+.status{font-size:12px;line-height:1.5;text-align:center;color:#2E6B3A;display:none}
+.status.show{display:block}
+.status.err{color:#B3261E}
+footer{padding:12px 16px 22px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 14px;font-size:12px}
+footer nav a{color:var(--muted);min-height:28px;display:inline-flex;align-items:center}
+.copy{font-size:12px;color:var(--soft)}
+@media (max-width:640px){
+  .logo{font-size:42px}
+  .tagline{font-size:14px}
+  .copy{font-size:11px}
+  .card{padding:20px 18px}
+  .flora-tr{width:230px}
+  .flora-bl{width:210px}
 }
-
-.container{
-    width:100%;
-    max-width:420px;
-    text-align:center;
-}
-
-.logo{
-    font-size:64px;
-    font-weight:700;
-    color:#7B2CF5;
-}
-
-.subtitle{
-    font-size:22px;
-    color:#666666;
-    margin-top:8px;
-}
-
-.card{
-    margin-top:35px;
-    padding:35px;
-    border-radius:20px;
-    background:#ffffff;
-    box-shadow:0 10px 35px rgba(0,0,0,.08);
-}
-
-h2{
-    font-size:26px;
-    margin-bottom:25px;
-    color:#333;
-}
-
-input{
-    width:100%;
-    padding:15px;
-    margin-bottom:18px;
-    border:1px solid #dddddd;
-    border-radius:10px;
-    font-size:16px;
-    outline:none;
-    transition:.3s;
-}
-
-input:focus{
-    border-color:#7B2CF5;
-    box-shadow:0 0 0 3px rgba(123,44,245,.15);
-}
-
-button{
-    width:100%;
-    padding:15px;
-    background:#7B2CF5;
-    color:#fff;
-    border:none;
-    border-radius:10px;
-    font-size:17px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.3s;
-}
-
-button:hover{
-    background:#6420d8;
-}
-
-.footer{
-    margin-top:25px;
-    color:#777;
-    font-size:14px;
-}
-
-.footer a{
-    color:#7B2CF5;
-    text-decoration:none;
-}
-
-.footer a:hover{
-    text-decoration:underline;
-}
-
 </style>
-
 </head>
-
 <body>
+<div class="page">
+  <img class="flora flora-tr" src="assets/flora-tr.webp" alt="" aria-hidden="true">
+  <img class="flora flora-bl" src="assets/flora-bl.webp" alt="" aria-hidden="true">
 
-<div class="container">
+  <header>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+      <span aria-hidden="true">|</span>
+      <button type="button" data-set-lang="hi" aria-pressed="false">हिंदी</button>
+    </div>
+  </header>
 
-<div class="logo">Espila</div>
+  <main>
+    <div class="brand">
+      <div class="brand-row">
+        <span class="logo">Espila</span>
+        <span class="mail">Mail<button type="button" class="seed" aria-label="Seed phase"><img src="assets/seed.png" alt=""><span class="tip" data-t="seedTip">Seed phase · Seed → Sprout → Blossom</span></button></span>
+      </div>
+      <p class="tagline">Today, Tomorrow &amp; Beyond...</p>
+    </div>
 
-<div class="subtitle">Mail</div>
+    <div class="cards">
+      <section class="card" aria-labelledby="signin-title">
+        <div>
+          <h1 id="signin-title" data-t="signinTitle">Sign in</h1>
+          <p class="sub" data-t="signinSub">Welcome to your inbox.</p>
+        </div>
+        <a class="btn btn-primary" href="https://webmail.espilamail.com" data-t="signinBtn">Sign in</a>
+        <p class="note"><span data-t="forgot">Forgot your password? Write to</span> <a href="mailto:support@espilamail.com">support@espilamail.com</a></p>
+        <p class="note"><span data-t="newHere">New here? Espila Mail is by invitation only.</span><br><a href="#request" data-t="requestLink">Request an invitation</a></p>
+      </section>
 
-<div class="card">
+      <section class="card" id="request" aria-labelledby="request-title">
+        <div>
+          <h2 id="request-title" data-t="reqTitle">Request an invitation</h2>
+          <p class="sub" data-t="reqSub">We review every request personally.</p>
+        </div>
+        <form id="invite-form" novalidate>
+          <div class="field">
+            <label for="rq-name" data-t="fName">Full name</label>
+            <input id="rq-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="rq-id" data-t="fAddr">Preferred address</label>
+            <div class="addr">
+              <input id="rq-id" name="preferred" type="text" placeholder="yourname" autocapitalize="none" spellcheck="false" required>
+              <span>@espilamail.com</span>
+            </div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label for="rq-cur" data-t="fCur">Current email</label>
+              <input id="rq-cur" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="rq-mob" data-t="fMob">Mobile</label>
+              <input id="rq-mob" name="mobile" type="tel" autocomplete="tel" placeholder="+91" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="rq-ref"><span data-t="fRef">Referred by</span> <small data-t="optional">(optional)</small></label>
+            <input id="rq-ref" name="referred_by" type="text">
+          </div>
+          <button type="submit" class="btn btn-outline" data-t="send">Send request</button>
+          <p class="status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+        <p class="fine"><span data-t="agree">By sending, you agree to our</span> <a href="terms.html" data-t="terms">Terms</a> <span data-t="and">and</span> <a href="privacy.html" data-t="privacy">Privacy Policy</a>.</p>
+      </section>
+    </div>
+  </main>
 
-<h2>Sign In</h2>
-
-<form>
-
-<input
-type="email"
-placeholder="Email Address"
-required>
-
-<input
-type="password"
-placeholder="Password"
-required>
-
-<button type="submit">
-Sign In
-</button>
-
-</form>
-
-<div class="footer">
-
-Forgot your password?
-<br><br>
-
-<a href="#">
-Create Account
-</a>
-
+  <footer>
+    <nav aria-label="Footer">
+      <a href="privacy.html" data-t="privacyShort">Privacy</a>
+      <a href="terms.html" data-t="terms">Terms</a>
+      <a href="mailto:support@espilamail.com" data-t="help">Help</a>
+      <a href="grievance.html" data-t="grievance">Grievance</a>
+      <a href="mailto:suggestions@espilamail.com" data-t="suggestions">Suggestions</a>
+    </nav>
+    <p class="copy">© 2026 Espila. <span data-t="rights">All rights reserved.</span></p>
+  </footer>
 </div>
 
-</div>
+<script>
+(function () {
+  // Where invitation requests go. Leave FORM_ENDPOINT empty to use the visitor's
+  // own email app (no third party). Paste a Formspree URL here later if wanted.
+  var FORM_ENDPOINT = "";
+  var INVITE_TO = "invite@espilamail.com";
 
-</div>
+  var T = {
+    hi: {
+      seedTip: "बीज चरण · बीज → अंकुर → फूल",
+      signinTitle: "साइन इन", signinSub: "आपके इनबॉक्स में स्वागत है।", signinBtn: "साइन इन",
+      forgot: "पासवर्ड भूल गए? लिखें:", newHere: "नए हैं? Espila Mail सिर्फ़ निमंत्रण से मिलता है।",
+      requestLink: "निमंत्रण माँगें", reqTitle: "निमंत्रण माँगें", reqSub: "हम हर अनुरोध खुद देखते हैं।",
+      fName: "पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
+      fRef: "किसने भेजा", optional: "(वैकल्पिक)", send: "अनुरोध भेजें",
+      agree: "भेजकर आप हमारी", terms: "शर्तें", and: "और", privacy: "गोपनीयता नीति",
+      privacyShort: "गोपनीयता", help: "मदद", grievance: "शिकायत", suggestions: "सुझाव",
+      rights: "सर्वाधिकार सुरक्षित।",
+      missing: "कृपया सभी ज़रूरी खाने भरें।", badEmail: "कृपया सही ईमेल पता लिखें।",
+      badAddr: "पसंदीदा पते में सिर्फ़ अंग्रेज़ी अक्षर, अंक, बिंदु (.) या हाइफ़न (-) हों।",
+      opened: "आपका ईमेल ऐप खुल गया है, वहाँ से मेल भेज दीजिए।",
+      sent: "धन्यवाद! आपका अनुरोध मिल गया, हम जल्द संपर्क करेंगे।",
+      failed: "अनुरोध नहीं भेजा जा सका। कृपया invite@espilamail.com पर लिखें।"
+    },
+    en: {
+      missing: "Please fill in all required fields.", badEmail: "Please enter a valid email address.",
+      badAddr: "The preferred address may only use English letters, numbers, dot (.) or hyphen (-).",
+      opened: "Your email app has opened — please send the message from there.",
+      sent: "Thank you! Your request has been received. We will be in touch soon.",
+      failed: "Could not send the request. Please write to invite@espilamail.com."
+    }
+  };
+  var original = {};
+  var lang = "en";
+  try { lang = localStorage.getItem("espila-lang") || "en"; } catch (e) {}
 
+  function msg(key) { return (T[lang] && T[lang][key]) || T.en[key]; }
+
+  function applyLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    document.querySelectorAll("[data-t]").forEach(function (el, i) {
+      var key = el.getAttribute("data-t");
+      if (!(i in original)) original[i] = el.textContent;
+      el.textContent = (l === "hi" && T.hi[key]) ? T.hi[key] : original[i];
+    });
+    document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-set-lang") === l));
+    });
+    try { localStorage.setItem("espila-lang", l); } catch (e) {}
+  }
+  document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+    b.addEventListener("click", function () { applyLang(b.getAttribute("data-set-lang")); });
+  });
+  applyLang(lang);
+
+  var form = document.getElementById("invite-form");
+  var status = document.getElementById("form-status");
+  function show(text, isErr) {
+    status.textContent = text;
+    status.className = "status show" + (isErr ? " err" : "");
+  }
+
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var d = {
+      name: form.name.value.trim(),
+      preferred: form.preferred.value.trim().toLowerCase(),
+      email: form.email.value.trim(),
+      mobile: form.mobile.value.trim(),
+      referred_by: form.referred_by.value.trim()
+    };
+    if (!d.name || !d.preferred || !d.email || !d.mobile) return show(msg("missing"), true);
+    if (!/^[a-z0-9]([a-z0-9.-]{0,38}[a-z0-9])?$/.test(d.preferred)) return show(msg("badAddr"), true);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return show(msg("badEmail"), true);
+
+    var body =
+      "Name: " + d.name + "\n" +
+      "Preferred address: " + d.preferred + "@espilamail.com\n" +
+      "Current email: " + d.email + "\n" +
+      "Mobile: " + d.mobile + "\n" +
+      "Referred by: " + (d.referred_by || "-") + "\n";
+
+    if (!FORM_ENDPOINT) {
+      window.location.href = "mailto:" + INVITE_TO +
+        "?subject=" + encodeURIComponent("Invitation request: " + d.preferred + "@espilamail.com") +
+        "&body=" + encodeURIComponent(body);
+      return show(msg("opened"), false);
+    }
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify(Object.assign({ _subject: "Invitation request: " + d.preferred }, d))
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      form.reset();
+      show(msg("sent"), false);
+    }).catch(function () { show(msg("failed"), true); });
+  });
+})();
+</script>
 </body>
 </html>
