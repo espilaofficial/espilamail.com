@@ -27,11 +27,21 @@ a:hover{color:var(--accent-dark);text-decoration:underline}
 .flora-tr{right:0;top:0;width:440px}
 .flora-bl{left:0;bottom:0;width:400px}
 header,main,footer{position:relative;z-index:1}
-header{width:100%;padding:12px 28px 0;display:flex;justify-content:flex-end}
+header{z-index:3 !important;width:100%;padding:12px 28px 0;display:flex;justify-content:flex-end}
 .lang{display:flex;align-items:center;font-size:12px}
 .lang button{background:none;border:0;font:inherit;font-weight:700;color:#4A4A4A;min-height:36px;padding:0 6px;cursor:pointer}
 .lang button[aria-pressed="true"]{color:var(--accent);font-weight:800}
-.lang span{color:#D4D4D4}
+.lang>span{color:#D4D4D4}
+.more{position:relative}
+.more-btn{display:inline-flex;align-items:center;gap:4px}
+.lang-pop{position:absolute;right:0;top:100%;margin-top:6px;width:340px;max-width:calc(100vw - 32px);max-height:70vh;overflow:auto;background:#fff;border:1px solid var(--card-line);border-radius:12px;padding:14px 16px;box-shadow:0 14px 34px rgba(43,43,43,.14);text-align:left;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s,transform .15s;z-index:5}
+.more:hover .lang-pop,.more.open .lang-pop,.more:focus-within .lang-pop{opacity:1;visibility:visible;transform:none}
+.lang-pop h3{font-size:13px;font-weight:800;color:var(--text);margin-bottom:8px}
+.lang-pop h4{font-size:11px;font-weight:800;color:var(--accent-dark);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips span{font-size:12px;line-height:1.3;padding:3px 8px;border-radius:999px;background:#F6F1FF;color:#3A3A3A;font-family:system-ui,'Nunito','Noto Sans Devanagari',sans-serif}
+.chips.in span{background:var(--accent);color:#fff;font-weight:600}
+.lang-pop p{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px;padding-top:8px;border-top:1px solid var(--card-line)}
 main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
 @media (min-height:640px) and (min-width:641px){main{padding-bottom:120px}}
 .brand{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
@@ -47,10 +57,21 @@ main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;disp
 .cards{width:100%;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify-content:center}
 .card{flex:1 1 280px;max-width:320px;background:rgba(255,255,255,.94);border:1px solid var(--card-line);border-radius:14px;padding:24px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 14px 34px rgba(123,44,245,.10),0 2px 6px rgba(43,43,43,.05)}
 .card h1,.card h2{font-size:18px;font-weight:700}
-.card-center{display:grid;grid-template-rows:1fr auto 1fr;row-gap:12px;min-height:230px;padding:16px 22px}
-.card-center>div:first-child{text-align:center;align-self:end}
-.card-center>div:first-child h1{font-size:15px}
-.today{font-size:12px;font-weight:700;color:var(--accent-dark);letter-spacing:.02em;margin-bottom:10px}
+.card-center{display:flex;flex-direction:column;justify-content:space-between;gap:22px;max-width:350px;min-height:380px;padding:26px 30px 26px}
+.clock{text-align:center}
+.greet{font-size:18px;font-weight:600;color:#666;text-align:center}
+.time{display:flex;flex-direction:column;align-items:center;gap:6px;line-height:1}
+.time .hm{position:relative;font-size:54px;font-weight:700;letter-spacing:-.01em;color:#5A5A5A;font-variant-numeric:tabular-nums}
+.time .ap-side{display:inline-block;width:0;white-space:nowrap;text-indent:6px;vertical-align:baseline;font-size:17px;font-weight:700;color:#7A7A7A;letter-spacing:0}
+.time .ap[hidden],.time .ap-side[hidden]{display:none}
+.time .colon{display:inline-block;font-weight:200;color:var(--accent);margin:0 2px;animation:beat 1s ease-in-out infinite}
+@keyframes beat{0%,100%{opacity:.85}50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){.time .colon{animation:none}}
+.time .ap{font-size:17px;font-weight:700;color:#7A7A7A}
+.clock .date{margin-top:16px;font-size:15px;font-weight:700;color:#4A4A4A}
+.card-center .btn-primary{min-height:40px;font-size:15px}
+.card-center .lower{gap:20px !important}
+.today{font-size:12px;font-weight:700;color:var(--accent-dark);letter-spacing:.02em;margin-bottom:2px}
 .today .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:1px}
 .card-center .lower{display:flex;flex-direction:column;gap:10px}
 .card-center .family{margin-top:auto}
@@ -116,6 +137,18 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       <button type="button" data-set-lang="en" aria-pressed="true">English</button>
       <span aria-hidden="true">|</span>
       <button type="button" data-set-lang="hi" aria-pressed="false">हिंदी</button>
+      <span aria-hidden="true">|</span>
+      <div class="more" id="more">
+        <button type="button" class="more-btn" aria-expanded="false" aria-controls="lang-pop">🌐 <span data-t="moreLang">70+ languages</span></button>
+        <div class="lang-pop" id="lang-pop" role="region" aria-label="Languages">
+          <h3 data-t="popTitle">Your mailbox opens in your language</h3>
+          <h4 data-t="popIn">8 Indian languages + English</h4>
+          <div class="chips in"><span>हिन्दी</span><span>বাংলা</span><span>मराठी</span><span>தமிழ்</span><span>ಕನ್ನಡ</span><span>മലയാളം</span><span>اردو</span><span>नेपाली</span><span>English</span></div>
+          <h4 data-t="popFo">65+ international languages</h4>
+          <div class="chips"><span>العربية</span><span>Asturianu</span><span>Azərbaycanca</span><span>Беларуская</span><span>Tamaziɣt</span><span>Български</span><span>Brezhoneg</span><span>Bosanski</span><span>Català</span><span>Čeština</span><span>Cymraeg</span><span>Dansk</span><span>Deutsch</span><span>Ελληνικά</span><span>Esperanto</span><span>Español</span><span>Eesti</span><span>Euskara</span><span>دری</span><span>فارسی</span><span>Suomi</span><span>Føroyskt</span><span>Français</span><span>Frysk</span><span>Gaeilge</span><span>Galego</span><span>עברית</span><span>Hrvatski</span><span>Magyar</span><span>Հայերեն</span><span>Interlingua</span><span>Bahasa Indonesia</span><span>Íslenska</span><span>Italiano</span><span>日本語</span><span>ქართული</span><span>Taqbaylit</span><span>ខ្មែរ</span><span>한국어</span><span>Kurdî</span><span>کوردی</span><span>Lëtzebuergesch</span><span>Lietuvių</span><span>Latviešu</span><span>Македонски</span><span>Монгол</span><span>Bahasa Melayu</span><span>Norsk</span><span>Nederlands</span><span>Polski</span><span>پښتو</span><span>Português</span><span>Română</span><span>Русский</span><span>සිංහල</span><span>Slovenčina</span><span>Slovenščina</span><span>Shqip</span><span>Српски</span><span>Svenska</span><span>ไทย</span><span>ትግርኛ</span><span>Türkçe</span><span>Talossan</span><span>ئۇيغۇرچە</span><span>Українська</span><span>Oʻzbekcha</span><span>Tiếng Việt</span><span>中文</span></div>
+          <p data-t="popHow">After signing in: Settings → General → Language.</p>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -129,12 +162,15 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     </div>
 
     <div class="cards">
-      <section class="card card-center" id="signin" aria-labelledby="signin-title">
+      <section class="card card-center" id="signin" aria-label="Sign in">
+        <p class="greet" id="greet"></p>
         <div>
-          <p class="today" id="today" aria-live="off"><span class="dot" aria-hidden="true"></span><span id="today-text"></span></p>
-          <h1 id="signin-title" data-t="signinTitle">Sign in</h1>
+          <div class="clock" aria-live="off">
+            <p class="time"><span class="hm"><span id="clock-h"></span><span class="colon" id="clock-colon" aria-hidden="true">:</span><span id="clock-m"></span><span class="ap-side" id="clock-ap-side" hidden></span></span><span class="ap" id="clock-ap"></span></p>
+            <p class="date" id="today-text"></p>
+          </div>
         </div>
-        <a class="btn btn-primary" href="https://my.espilamail.com" data-t="signinBtn">Continue</a>
+        <a class="btn btn-primary" href="https://my.espilamail.com" data-t="signinBtn">Sign in</a>
         <div class="lower">
         <p class="note"><a href="mailto:support@espilamail.com?subject=Password%20help" title="support@espilamail.com" data-t="forgot">Forgot password?</a></p>
         <p class="note family"><a href="#request" title="Open the form" data-t="familyLink">Welcome to the Espila family</a></p>
@@ -229,7 +265,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
   var T = {
     hi: {
       seedTip: "बीज चरण — कुछ नया उग रहा है…",
-      signinTitle: "साइन इन", signinBtn: "आगे बढ़ें",
+      signinBtn: "प्रवेश करें",
       forgot: "पासवर्ड भूल गए?", familyLink: "Espila परिवार में आपका स्वागत है",
       back: "← साइन इन पर वापस", reqTitle: "Espila परिवार में आपका स्वागत है", reqSub: "अपनी जानकारी भरें।",
       fName: "पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
@@ -237,6 +273,9 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       agree: "भेजकर आप हमारी", terms: "शर्तें", and: "और", privacy: "गोपनीयता नीति",
       privacyShort: "गोपनीयता", help: "मदद", grievance: "शिकायत", suggestions: "सुझाव",
       rights: "सर्वाधिकार सुरक्षित।",
+      moreLang: "70+ भाषाएँ", popTitle: "आपका मेलबॉक्स आपकी भाषा में",
+      popIn: "8 भारतीय भाषाएँ + English", popFo: "65 से ज़्यादा विदेशी भाषाएँ",
+      popHow: "साइन इन के बाद: सेटिंग्स → सामान्य → भाषा।",
       missing: "कृपया सभी ज़रूरी खाने भरें।", badEmail: "कृपया सही ईमेल पता लिखें।",
       badAddr: "पसंदीदा पते में सिर्फ़ अंग्रेज़ी अक्षर, अंक, बिंदु (.) या हाइफ़न (-) हों।",
       opened: "आपका ईमेल ऐप खुल गया है, वहाँ से मेल भेज दीजिए।",
@@ -268,18 +307,58 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     document.querySelectorAll("[data-set-lang]").forEach(function (b) {
       b.setAttribute("aria-pressed", String(b.getAttribute("data-set-lang") === l));
     });
-    var dt = window.__espilaDate || new Date(), tt = document.getElementById("today-text");
-    if (tt) {
-      try {
-        tt.textContent = new Intl.DateTimeFormat(l === "hi" ? "hi-IN" : "en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(dt);
-      } catch (e) { tt.textContent = dt.toDateString(); }
-    }
+    renderClock();
     try { localStorage.setItem("espila-lang", l); } catch (e) {}
   }
+
+  // घड़ी: बड़ा समय, सुबह/दोपहर/शाम/रात (AM/PM), अभिवादन और तारीख — देखने वाले की अपनी घड़ी से
+  var preview = /[?&]day=[0-6]/.test(location.search);
+  function renderClock() {
+    var now = new Date();
+    var dt = preview ? (window.__espilaDate || now) : now;
+    var h = now.getHours(), m = now.getMinutes();
+    var h12 = h % 12 || 12, mm = (m < 10 ? "0" : "") + m;
+    var part = h >= 4 && h < 12 ? 0 : h >= 12 && h < 16 ? 1 : h >= 16 && h < 19 ? 2 : 3;
+    var hi = lang === "hi";
+    var ap = hi ? ["सुबह", "दोपहर", "शाम", "रात"][part] : (h < 12 ? "AM" : "PM");
+    var gr = hi ? ["सुप्रभात", "नमस्कार", "शुभ संध्या", "शुभ रात्रि"][part]
+                : ["Good morning", "Good afternoon", "Good evening", "Good evening"][part];
+    var el;
+    if ((el = document.getElementById("clock-h"))) el.textContent = h12;
+    if ((el = document.getElementById("clock-m"))) el.textContent = mm;
+    if ((el = document.getElementById("clock-ap"))) { el.textContent = ap; el.hidden = !hi; }
+    if ((el = document.getElementById("clock-ap-side"))) { el.textContent = ap; el.hidden = hi; }
+    if ((el = document.getElementById("greet"))) el.textContent = gr;
+    if ((el = document.getElementById("today-text"))) {
+      try {
+        el.textContent = new Intl.DateTimeFormat(hi ? "hi-IN" : "en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(dt);
+      } catch (e) { el.textContent = dt.toDateString(); }
+    }
+  }
+  function syncBeat() {
+    var c = document.getElementById("clock-colon");
+    if (c) c.style.animationDelay = (-(new Date().getMilliseconds()) / 1000) + "s";
+  }
+  function tick() {
+    renderClock(); syncBeat();
+    var n = new Date();
+    setTimeout(tick, (60 - n.getSeconds()) * 1000 - n.getMilliseconds() + 50);
+  }
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) renderClock(); });
   document.querySelectorAll("[data-set-lang]").forEach(function (b) {
     b.addEventListener("click", function () { applyLang(b.getAttribute("data-set-lang")); });
   });
   applyLang(lang);
+  tick();
+
+  var more = document.getElementById("more"), moreBtn = more.querySelector(".more-btn");
+  moreBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var o = more.classList.toggle("open"); moreBtn.setAttribute("aria-expanded", String(o));
+  });
+  document.addEventListener("click", function (e) {
+    if (!more.contains(e.target)) { more.classList.remove("open"); moreBtn.setAttribute("aria-expanded", "false"); }
+  });
 
   var signin = document.getElementById("signin");
   var request = document.getElementById("request");
