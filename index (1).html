@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espila Mail – Today, Tomorrow &amp; Beyond...</title>
+<meta name="description" content="Espila Mail – a calm, private, invitation-only email service.">
+<meta name="theme-color" content="#7B2CF5">
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#7B2CF5; --accent-dark:#5A16C4; --accent-deep:#45109A; --ring:rgba(123,44,245,.10); --flora-filter:none;
+  --text:#2B2B2B; --muted:#666666; --label:#555555; --soft:#8A8A8A;
+  --line:#E3E0EA; --card-line:#EEEAF5; --bg:#FBFAFE;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:'Nunito','Noto Sans Devanagari',system-ui,sans-serif;color:var(--text);background:var(--bg)}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-dark);text-decoration:underline}
+.page{position:relative;overflow:hidden;min-height:100vh;display:flex;flex-direction:column}
+.flora{position:absolute;height:auto;z-index:0;pointer-events:none;opacity:.33;filter:var(--flora-filter)}
+.flora-tr{right:0;top:0;width:440px}
+.flora-bl{left:0;bottom:0;width:400px}
+header,main,footer{position:relative;z-index:1}
+header{z-index:3 !important;width:100%;padding:12px 28px 0;display:flex;justify-content:flex-end}
+.lang{display:flex;align-items:center;font-size:12px}
+.lang button{background:none;border:0;font:inherit;font-weight:700;color:#4A4A4A;min-height:36px;padding:0 6px;cursor:pointer}
+.lang button[aria-pressed="true"]{color:var(--accent);font-weight:800}
+.lang>span{color:#D4D4D4}
+.more{position:relative}
+.more-btn{display:inline-flex;align-items:center;gap:4px}
+.lang-pop{position:absolute;right:0;top:100%;margin-top:6px;width:340px;max-width:calc(100vw - 32px);max-height:70vh;overflow:auto;background:#fff;border:1px solid var(--card-line);border-radius:12px;padding:14px 16px;box-shadow:0 14px 34px rgba(43,43,43,.14);text-align:left;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s,transform .15s;z-index:5}
+.more:hover .lang-pop,.more.open .lang-pop,.more:focus-within .lang-pop{opacity:1;visibility:visible;transform:none}
+.lang-pop h3{font-size:13px;font-weight:800;color:var(--text);margin-bottom:8px}
+.lang-pop h4{font-size:11px;font-weight:800;color:var(--accent-dark);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips span{font-size:12px;line-height:1.3;padding:3px 8px;border-radius:999px;background:#F6F1FF;color:#3A3A3A;font-family:system-ui,'Nunito','Noto Sans Devanagari',sans-serif}
+.chips.in span{background:var(--accent);color:#fff;font-weight:600}
+.lang-pop p{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px;padding-top:8px;border-top:1px solid var(--card-line)}
+main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+@media (min-height:640px) and (min-width:641px){main{padding-bottom:120px}}
+.brand{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.brand-row{display:flex;align-items:baseline;gap:8px}
+.logo{font-size:52px;font-weight:900;letter-spacing:-.02em;line-height:1.05;color:var(--accent)}
+.mail{position:relative;font-size:16px;font-weight:600;color:var(--muted)}
+.tm{font-size:12px;font-weight:600;color:#9A9A9A;margin-left:1px;vertical-align:super;line-height:0}
+.seed{position:absolute;left:100%;bottom:70%;margin-left:2px;background:none;border:0;padding:4px;cursor:help;line-height:0}
+.seed img{width:8px;height:8px;opacity:.8}
+.seed .tip{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:4px;white-space:nowrap;background:#fff;border:1px solid var(--card-line);border-radius:8px;padding:6px 10px;font-size:11px;line-height:1.4;color:var(--muted);box-shadow:0 4px 14px rgba(43,43,43,.08);opacity:0;visibility:hidden;transition:opacity .15s}
+.seed:hover .tip,.seed:focus .tip{opacity:1;visibility:visible}
+.tagline{font-size:12px;color:var(--muted)}
+.cards{width:100%;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify-content:center}
+.card{flex:1 1 280px;max-width:320px;background:rgba(255,255,255,.94);border:1px solid var(--card-line);border-radius:14px;padding:24px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 14px 34px rgba(123,44,245,.10),0 2px 6px rgba(43,43,43,.05)}
+.card h1,.card h2{font-size:18px;font-weight:700}
+.card-center{display:flex;flex-direction:column;justify-content:space-between;gap:22px;max-width:350px;min-height:410px;padding:22px 26px 26px}
+.clock{text-align:center}
+.wx{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 8px;font-size:13px;font-weight:600;color:#6A6A6A;min-height:26px}
+.wx[hidden]{display:none}
+.wx .aq{border-radius:999px;padding:3px 10px;font-weight:800;border:1px solid transparent;white-space:nowrap}
+.wx .city{background:none;border:0;font:inherit;font-weight:600;color:#8A8A8A;cursor:pointer;padding:2px 0;border-bottom:1px dashed #C9C9C9}
+.wx .city:hover{color:var(--accent)}
+.cityform{display:flex;flex-direction:row;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.cityform[hidden]{display:none}
+.cityform input{width:150px;flex:0 0 150px;min-height:32px;font-size:13px}
+.cityform button{flex:0 0 auto;min-height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--accent);background:#fff;color:var(--accent);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.cityform .auto{border:0;color:#8A8A8A;font-weight:600;text-decoration:underline;padding:0 4px}
+.cityform .msg{width:100%;text-align:center;font-size:11px;color:#B3261E}
+.greet{font-size:18px;font-weight:600;color:#666;text-align:center}
+.time{display:flex;flex-direction:column;align-items:center;gap:6px;line-height:1}
+.time .hm{position:relative;font-size:54px;font-weight:700;letter-spacing:-.01em;color:#5A5A5A;font-variant-numeric:tabular-nums}
+.time .ap-side{display:inline-block;width:0;white-space:nowrap;text-indent:6px;vertical-align:baseline;font-size:17px;font-weight:700;color:#7A7A7A;letter-spacing:0}
+.time .ap[hidden],.time .ap-side[hidden]{display:none}
+.time .colon{display:inline-block;position:relative;top:-.46em;font-size:.5em;font-weight:300;color:var(--accent);margin:0 4px;vertical-align:baseline;animation:beat 1s ease-in-out infinite}
+@keyframes beat{0%,100%{opacity:.85}50%{opacity:.15}}
+@media (prefers-reduced-motion:reduce){.time .colon{animation:none}}
+.time .ap{font-size:17px;font-weight:700;color:#7A7A7A}
+.clock .date{margin-top:16px;font-size:15px;font-weight:700;color:#4A4A4A}
+.card-center .btn-primary{min-height:40px;font-size:15px}
+.card-center .lower{gap:20px !important}
+.today{font-size:12px;font-weight:700;color:var(--accent-dark);letter-spacing:.02em;margin-bottom:2px}
+.today .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:1px}
+.card-center .lower{display:flex;flex-direction:column;gap:10px}
+.card-center .family{margin-top:auto}
+.card[hidden]{display:none}
+.back{align-self:flex-start;background:none;border:0;font:inherit;font-size:12px;font-weight:600;color:var(--accent);cursor:pointer;padding:4px 0;min-height:32px}
+.back:hover{text-decoration:underline}
+.sub{font-size:12px;color:var(--muted);line-height:1.5}
+form{display:flex;flex-direction:column;gap:10px}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:12px;font-weight:600;color:var(--label)}
+label small{font-weight:400;color:var(--soft);font-size:12px}
+input{width:100%;min-width:0;min-height:38px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:#fff;font:inherit;font-size:14px;color:var(--text)}
+input::placeholder{color:#ABABAB}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+.addr{display:flex;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}
+.addr input{border:0;border-radius:0}
+.addr input:focus{box-shadow:none}
+.addr:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+.addr span{display:flex;align-items:center;padding:0 10px;color:var(--muted);font-size:12px;white-space:nowrap;border-left:1px solid var(--card-line);background:#FAF9FC}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:30px;border-radius:8px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn:hover{text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff;border:0}
+.btn-primary:hover{background:var(--accent-dark);color:#fff}
+.btn-outline{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:hover{background:#F6F1FF}
+.note{font-size:12px;color:var(--muted);line-height:1.6;text-align:center}
+.note a,.fine a{color:var(--accent-dark);font-weight:600}
+.note a:hover,.fine a:hover{color:var(--accent-deep)}
+.family{padding-top:6px;border-top:1px solid var(--card-line)}
+.family a{font-size:13px;font-weight:700}
+.family a{position:relative}
+.family a::after{content:"→";position:absolute;left:100%;top:0;margin-left:5px;opacity:0;transform:translateX(-4px);transition:opacity .2s,transform .2s}
+.family a:hover,.family a:focus{text-decoration:none}
+.family a:hover::after,.family a:focus::after{opacity:1;transform:translateX(0)}
+.fine{font-size:11px;color:#757575;line-height:1.6;text-align:center}
+.status{font-size:12px;line-height:1.5;text-align:center;color:#2E6B3A;display:none}
+.status.show{display:block}
+.status.err{color:#B3261E}
+footer{padding:4px 16px 22px;display:flex;flex-direction:column;align-items:center;gap:0;text-align:center}
+footer::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(214,206,236,0) 0%,#D6CEEC 25%,#D6CEEC 75%,rgba(214,206,236,0) 100%)}
+footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 14px;font-size:12px}
+footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:center}
+.copy{font-size:12px;color:var(--soft)}
+@media (max-width:640px){
+  .logo{font-size:42px}
+  .tagline{font-size:11px}
+  .copy{font-size:11px}
+  .card{padding:20px 18px}
+  header{padding:10px 16px 0}
+  .flora-tr{width:230px}
+  .flora-bl{width:210px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <img class="flora flora-tr" src="flora-tr.webp" alt="" aria-hidden="true">
+  <img class="flora flora-bl" src="flora-bl.webp" alt="" aria-hidden="true">
+
+  <header>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+      <span aria-hidden="true">|</span>
+      <button type="button" data-set-lang="hi" aria-pressed="false">हिंदी</button>
+      <span aria-hidden="true">|</span>
+      <div class="more" id="more">
+        <button type="button" class="more-btn" aria-expanded="false" aria-controls="lang-pop">🌐 <span data-t="moreLang">70+ languages</span></button>
+        <div class="lang-pop" id="lang-pop" role="region" aria-label="Languages">
+          <h3 data-t="popTitle">Your mailbox opens in your language</h3>
+          <h4 data-t="popIn">8 Indian languages + English</h4>
+          <div class="chips in"><span>हिन्दी</span><span>বাংলা</span><span>मराठी</span><span>தமிழ்</span><span>ಕನ್ನಡ</span><span>മലയാളം</span><span>اردو</span><span>नेपाली</span><span>English</span></div>
+          <h4 data-t="popFo">65+ international languages</h4>
+          <div class="chips"><span>العربية</span><span>Asturianu</span><span>Azərbaycanca</span><span>Беларуская</span><span>Tamaziɣt</span><span>Български</span><span>Brezhoneg</span><span>Bosanski</span><span>Català</span><span>Čeština</span><span>Cymraeg</span><span>Dansk</span><span>Deutsch</span><span>Ελληνικά</span><span>Esperanto</span><span>Español</span><span>Eesti</span><span>Euskara</span><span>دری</span><span>فارسی</span><span>Suomi</span><span>Føroyskt</span><span>Français</span><span>Frysk</span><span>Gaeilge</span><span>Galego</span><span>עברית</span><span>Hrvatski</span><span>Magyar</span><span>Հայերեն</span><span>Interlingua</span><span>Bahasa Indonesia</span><span>Íslenska</span><span>Italiano</span><span>日本語</span><span>ქართული</span><span>Taqbaylit</span><span>ខ្មែរ</span><span>한국어</span><span>Kurdî</span><span>کوردی</span><span>Lëtzebuergesch</span><span>Lietuvių</span><span>Latviešu</span><span>Македонски</span><span>Монгол</span><span>Bahasa Melayu</span><span>Norsk</span><span>Nederlands</span><span>Polski</span><span>پښتو</span><span>Português</span><span>Română</span><span>Русский</span><span>සිංහල</span><span>Slovenčina</span><span>Slovenščina</span><span>Shqip</span><span>Српски</span><span>Svenska</span><span>ไทย</span><span>ትግርኛ</span><span>Türkçe</span><span>Talossan</span><span>ئۇيغۇرچە</span><span>Українська</span><span>Oʻzbekcha</span><span>Tiếng Việt</span><span>中文</span></div>
+          <p data-t="popHow">After signing in: Settings → General → Language.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="brand">
+      <div class="brand-row">
+        <span class="logo">Espila</span>
+        <span class="mail">Mail<sup class="tm" aria-label="trademark">™</sup><button type="button" class="seed" aria-label="Seed phase — something is growing"><img src="seed.png" alt=""><span class="tip" data-t="seedTip">Seed phase — something is growing…</span></button></span>
+      </div>
+      <p class="tagline">Today, Tomorrow &amp; Beyond...</p>
+    </div>
+
+    <div class="cards">
+      <section class="card card-center" id="signin" aria-label="Sign in">
+        <div>
+          <p class="wx" id="wx" hidden aria-live="polite"><span id="wx-temp"></span><span class="aq" id="wx-aqi"></span><button type="button" class="city" id="wx-city" aria-expanded="false" aria-controls="cityform"></button></p>
+          <form class="cityform" id="cityform" hidden>
+            <input id="city-input" type="text" autocomplete="address-level2" data-tp="cityPh" placeholder="City name">
+            <button type="submit" data-t="cityOk">OK</button>
+            <button type="button" class="auto" id="city-auto" data-t="cityAuto">Auto</button>
+            <span class="msg" id="city-msg"></span>
+          </form>
+        </div>
+        <p class="greet" id="greet"></p>
+        <div>
+          <div class="clock" aria-live="off">
+            <p class="time"><span class="hm"><span id="clock-h"></span><span class="colon" id="clock-colon" aria-hidden="true">:</span><span id="clock-m"></span><span class="ap-side" id="clock-ap-side" hidden></span></span><span class="ap" id="clock-ap"></span></p>
+            <p class="date" id="today-text"></p>
+          </div>
+        </div>
+        <a class="btn btn-primary" href="https://my.espilamail.com" data-t="signinBtn">Sign in</a>
+        <div class="lower">
+        <p class="note"><a href="mailto:support@espilamail.com?subject=Password%20help" title="support@espilamail.com" data-t="forgot">Forgot password?</a></p>
+        <p class="note family"><a href="#request" title="Open the form" data-t="familyLink">Get your account</a></p>
+        </div>
+      </section>
+
+      <section class="card" id="request" aria-labelledby="request-title" hidden>
+        <button type="button" class="back" id="back-btn" data-t="back">← Back to sign in</button>
+        <div>
+          <h2 id="request-title" data-t="reqTitle">Get your account</h2>
+          <p class="sub" data-t="reqSub">Share your details, and we'll create your account and let you know.</p>
+        </div>
+        <form id="invite-form" novalidate>
+          <div class="field">
+            <label for="rq-name" data-t="fName">Full name</label>
+            <input id="rq-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="rq-id" data-t="fAddr">Preferred address</label>
+            <div class="addr">
+              <input id="rq-id" name="preferred" type="text" placeholder="yourname" autocapitalize="none" spellcheck="false" required>
+              <span>@espilamail.com</span>
+            </div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label for="rq-cur" data-t="fCur">Current email</label>
+              <input id="rq-cur" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="rq-mob" data-t="fMob">Mobile</label>
+              <input id="rq-mob" name="mobile" type="tel" autocomplete="tel" placeholder="+91" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="rq-ref"><span data-t="fRef">Referred by</span> <small data-t="optional">(optional)</small></label>
+            <input id="rq-ref" name="referred_by" type="text">
+          </div>
+          <button type="submit" class="btn btn-outline" data-t="send">Send</button>
+          <p class="status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+        <p class="fine"><span data-t="agree">By sending, you agree to our</span> <a href="terms.html" data-t="terms">Terms</a> <span data-t="and">and</span> <a href="privacy.html" data-t="privacy">Privacy Policy</a>.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <nav aria-label="Footer">
+      <a href="privacy.html" data-t="privacyShort">Privacy</a>
+      <a href="terms.html" data-t="terms">Terms</a>
+      <a href="mailto:support@espilamail.com" data-t="help">Help</a>
+      <a href="grievance.html" data-t="grievance">Grievance</a>
+      <a href="mailto:suggestions@espilamail.com" data-t="suggestions">Suggestions</a>
+    </nav>
+    <p class="copy">© 2026 Espila Mail. <span data-t="rights">All rights reserved.</span></p>
+  </footer>
+</div>
+
+<script>
+// Day-of-week colours (वार के रंग). ?day=0..6 previews a day (0 = Sunday).
+(function () {
+  var DAYS = [
+    { a: "#D9480F", d: "#B03A0B", x: "#8A2E08", h: 140 },  // रविवार – सूर्य – केसरिया
+    { a: "#3B6E9E", d: "#2C5679", x: "#1F3E58", h: -55, s: 0.6 }, // सोमवार – चंद्र – चाँदी-नीला
+    { a: "#C62828", d: "#A11F1F", x: "#7A1717", h: 105 },  // मंगलवार – मंगल – लाल
+    { a: "#2E7D32", d: "#236127", x: "#18461B", h: -135 }, // बुधवार – बुध – हरा
+    { a: "#A16207", d: "#7F4D05", x: "#5E3904", h: 150 },  // गुरुवार – बृहस्पति – पीला/सुनहरा
+    { a: "#C2185B", d: "#9C1349", x: "#740E36", h: 65 },   // शुक्रवार – शुक्र – गुलाबी
+    { a: "#7B2CF5", d: "#5A16C4", x: "#45109A", h: 0 }     // शनिवार – शनि – बैंगनी (Espila का मूल रंग)
+  ];
+  var day = new Date().getDay();
+  var m = /[?&]day=([0-6])/.exec(location.search);
+  var shown = new Date();
+  if (m) { day = +m[1]; shown.setDate(shown.getDate() + (day - shown.getDay())); }
+  window.__espilaDate = shown;
+  var c = DAYS[day], r = document.documentElement.style;
+  r.setProperty("--accent", c.a);
+  r.setProperty("--accent-dark", c.d);
+  r.setProperty("--accent-deep", c.x);
+  var rgb = [1, 3, 5].map(function (i) { return parseInt(c.a.substr(i, 2), 16); }).join(",");
+  r.setProperty("--ring", "rgba(" + rgb + ",.12)");
+  r.setProperty("--flora-filter", "hue-rotate(" + c.h + "deg) saturate(" + (c.s || 1.1) + ")");
+  var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute("content", c.a);
+})();
+
+(function () {
+  // Where invitation requests go. Leave FORM_ENDPOINT empty to use the visitor's
+  // own email app (no third party). Paste a Formspree URL here later if wanted.
+  var FORM_ENDPOINT = "";
+  var INVITE_TO = "invite@espilamail.com";
+
+  var T = {
+    hi: {
+      seedTip: "बीज चरण — कुछ नया उग रहा है…",
+      signinBtn: "प्रवेश करें",
+      forgot: "पासवर्ड भूल गए?", familyLink: "खाता बनवाएँ",
+      back: "← साइन इन पर वापस", reqTitle: "खाता बनवाएँ", reqSub: "अपनी जानकारी भेजिए, हम आपका खाता बनाकर बताएँगे।",
+      fName: "पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
+      fRef: "किसने भेजा", optional: "(वैकल्पिक)", send: "भेजें",
+      agree: "भेजकर आप हमारी", terms: "शर्तें", and: "और", privacy: "गोपनीयता नीति",
+      privacyShort: "गोपनीयता", help: "मदद", grievance: "शिकायत", suggestions: "सुझाव",
+      rights: "सर्वाधिकार सुरक्षित।",
+      moreLang: "70+ भाषाएँ", popTitle: "आपका मेलबॉक्स आपकी भाषा में",
+      popIn: "8 भारतीय भाषाएँ + English", popFo: "65 से ज़्यादा विदेशी भाषाएँ",
+      popHow: "साइन इन के बाद: सेटिंग्स → सामान्य → भाषा।",
+      cityOk: "ठीक", cityAuto: "अपने-आप",
+      missing: "कृपया सभी ज़रूरी खाने भरें।", badEmail: "कृपया सही ईमेल पता लिखें।",
+      badAddr: "पसंदीदा पते में सिर्फ़ अंग्रेज़ी अक्षर, अंक, बिंदु (.) या हाइफ़न (-) हों।",
+      opened: "आपका ईमेल ऐप खुल गया है, वहाँ से मेल भेज दीजिए।",
+      sent: "धन्यवाद! हम जल्द ही आपसे संपर्क करेंगे।",
+      failed: "जानकारी नहीं भेजी जा सकी। कृपया invite@espilamail.com पर लिखें।"
+    },
+    en: {
+      missing: "Please fill in all required fields.", badEmail: "Please enter a valid email address.",
+      badAddr: "The preferred address may only use English letters, numbers, dot (.) or hyphen (-).",
+      opened: "Your email app has opened — please send the message from there.",
+      sent: "Thank you! We'll be in touch soon.",
+      failed: "Could not send your details. Please write to invite@espilamail.com."
+    }
+  };
+  var original = {};
+  var lang = "en";
+  try { lang = localStorage.getItem("espila-lang") || "en"; } catch (e) {}
+
+  function msg(key) { return (T[lang] && T[lang][key]) || T.en[key]; }
+
+  function applyLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    document.querySelectorAll("[data-t]").forEach(function (el, i) {
+      var key = el.getAttribute("data-t");
+      if (!(i in original)) original[i] = el.textContent;
+      el.textContent = (l === "hi" && T.hi[key]) ? T.hi[key] : original[i];
+    });
+    document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-set-lang") === l));
+    });
+    renderClock();
+    var ci = document.getElementById("city-input");
+    if (ci) ci.placeholder = l === "hi" ? "शहर का नाम" : "City name";
+    if (window.__espilaWx) window.__espilaWx.render();
+    try { localStorage.setItem("espila-lang", l); } catch (e) {}
+  }
+
+  // घड़ी: बड़ा समय, सुबह/दोपहर/शाम/रात (AM/PM), अभिवादन और तारीख — देखने वाले की अपनी घड़ी से
+  var preview = /[?&]day=[0-6]/.test(location.search);
+  function renderClock() {
+    var now = new Date();
+    var dt = preview ? (window.__espilaDate || now) : now;
+    var h = now.getHours(), m = now.getMinutes();
+    var h12 = h % 12 || 12, mm = (m < 10 ? "0" : "") + m;
+    var part = h >= 4 && h < 12 ? 0 : h >= 12 && h < 16 ? 1 : h >= 16 && h < 19 ? 2 : 3;
+    var hi = lang === "hi";
+    var ap = hi ? ["सुबह", "दोपहर", "शाम", "रात"][part] : (h < 12 ? "AM" : "PM");
+    var gr = hi ? ["सुप्रभात", "नमस्कार", "शुभ संध्या", "शुभ रात्रि"][part]
+                : ["Good morning", "Good afternoon", "Good evening", "Good evening"][part];
+    var el;
+    if ((el = document.getElementById("clock-h"))) el.textContent = h12;
+    if ((el = document.getElementById("clock-m"))) el.textContent = mm;
+    if ((el = document.getElementById("clock-ap"))) { el.textContent = ap; el.hidden = !hi; }
+    if ((el = document.getElementById("clock-ap-side"))) { el.textContent = ap; el.hidden = hi; }
+    if ((el = document.getElementById("greet"))) el.textContent = gr;
+    if ((el = document.getElementById("today-text"))) {
+      try {
+        el.textContent = new Intl.DateTimeFormat(hi ? "hi-IN" : "en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(dt);
+      } catch (e) { el.textContent = dt.toDateString(); }
+    }
+  }
+  function syncBeat() {
+    var c = document.getElementById("clock-colon");
+    if (c) c.style.animationDelay = (-(new Date().getMilliseconds()) / 1000) + "s";
+  }
+  function tick() {
+    renderClock(); syncBeat();
+    var n = new Date();
+    setTimeout(tick, (60 - n.getSeconds()) * 1000 - n.getMilliseconds() + 50);
+  }
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) renderClock(); });
+  document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+    b.addEventListener("click", function () { applyLang(b.getAttribute("data-set-lang")); });
+  });
+  applyLang(lang);
+  tick();
+
+  // मौसम और हवा (AQI): IP से शहर → न मिले तो समय क्षेत्र → न मिले तो दिल्ली। व्यक्ति खुद शहर चुन सकता है।
+  (function () {
+    var KEY = "espila-wx", DELHI = { en: "Delhi", hi: "दिल्ली", lat: 28.6139, lon: 77.2090 };
+    var box = document.getElementById("wx"); if (!box) return;
+    var state = null;
+    function load() { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } }
+    function save(o) { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
+    function getJSON(url) {
+      return fetch(url, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+    }
+    // भारत (CPCB) का AQI — PM2.5 और PM10 के 24 घंटे के औसत से
+    var BP = {
+      pm25: [[0,30,0,50],[30,60,50,100],[60,90,100,200],[90,120,200,300],[120,250,300,400],[250,500,400,500]],
+      pm10: [[0,50,0,50],[50,100,50,100],[100,250,100,200],[250,350,200,300],[350,430,300,400],[430,1000,400,500]]
+    };
+    function sub(c, t) {
+      if (c == null || isNaN(c)) return null;
+      var b = BP[t];
+      for (var i = 0; i < b.length; i++) if (c <= b[i][1]) return b[i][2] + (c - b[i][0]) * (b[i][3] - b[i][2]) / (b[i][1] - b[i][0]);
+      return 500;
+    }
+    function avg24(times, vals) {
+      var now = Date.now(), sum = 0, n = 0;
+      for (var i = 0; i < times.length; i++) {
+        var t = new Date(times[i]).getTime();
+        if (t <= now && t > now - 24 * 3600e3 && vals[i] != null) { sum += vals[i]; n++; }
+      }
+      return n >= 8 ? sum / n : null;
+    }
+    var CATS = [
+      [50, "अच्छा", "Good", "#2E7D32", "#E8F5E9"],
+      [100, "संतोषजनक", "Satisfactory", "#558B2F", "#F1F8E9"],
+      [200, "मध्यम", "Moderate", "#B26A00", "#FFF4E0"],
+      [300, "ख़राब", "Poor", "#D84315", "#FBE9E7"],
+      [400, "बहुत ख़राब", "Very Poor", "#B71C1C", "#FDECEC"],
+      [9999, "गंभीर", "Severe", "#6A1B1B", "#F3E5E5"]
+    ];
+    function icon(code, day) {
+      if (code === 0) return day ? "☀" : "🌙";
+      if (code <= 2) return day ? "🌤" : "☁";
+      if (code === 3) return "☁";
+      if (code === 45 || code === 48) return "🌫";
+      if (code >= 95) return "⛈";
+      if (code >= 71 && code <= 77) return "❄";
+      if (code >= 80) return "🌦";
+      if (code >= 51) return "🌧";
+      return "🌤";
+    }
+    function render() {
+      if (!state || state.temp == null) { box.hidden = true; return; }
+      var hi = document.documentElement.lang === "hi";
+      document.getElementById("wx-temp").textContent = icon(state.code, state.day) + " " + Math.round(state.temp) + "°";
+      var aq = document.getElementById("wx-aqi");
+      if (state.aqi != null) {
+        var a = Math.round(state.aqi), c = CATS[0];
+        for (var i = 0; i < CATS.length; i++) if (a <= CATS[i][0]) { c = CATS[i]; break; }
+        aq.textContent = (hi ? "हवा " : "AQI ") + a + " · " + (hi ? c[1] : c[2]);
+        aq.style.color = c[3]; aq.style.background = c[4]; aq.style.borderColor = c[3] + "33";
+        aq.hidden = false;
+      } else aq.hidden = true;
+      var loc = state.loc || DELHI;
+      document.getElementById("wx-city").textContent = ((hi ? loc.hi : loc.en) || loc.en || loc.hi) + " ▾";
+      box.hidden = false;
+    }
+    function hindiName(loc) {
+      if (loc.hi) return Promise.resolve(loc);
+      return getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=hi&name=" + encodeURIComponent(loc.en))
+        .then(function (d) { if (d.results && d.results[0]) loc.hi = d.results[0].name; return loc; })
+        .catch(function () { return loc; });
+    }
+    function fromTimezone() {
+      var tz = "";
+      try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+      if (!tz || /^Asia\/(Kolkata|Calcutta)$/.test(tz)) return Promise.resolve(DELHI);
+      var name = tz.split("/").pop().replace(/_/g, " ");
+      return getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(name))
+        .then(function (d) { var r = d.results && d.results[0]; if (!r) return DELHI; return { en: r.name, lat: r.latitude, lon: r.longitude }; })
+        .catch(function () { return DELHI; });
+    }
+    function fromIP() {
+      return getJSON("https://get.geojs.io/v1/ip/geo.json").then(function (d) {
+        if (!d.city || !d.latitude) throw new Error("no city");
+        return { en: d.city, lat: +d.latitude, lon: +d.longitude };
+      }).catch(function () {
+        return getJSON("https://ipwho.is/").then(function (d) {
+          if (!d.success || !d.city) throw new Error("no city");
+          return { en: d.city, lat: d.latitude, lon: d.longitude };
+        });
+      }).catch(fromTimezone);
+    }
+    function locate(force) {
+      var s = load();
+      if (!force && s && s.loc && (s.loc.manual || Date.now() - (s.locTs || 0) < 12 * 3600e3)) return Promise.resolve(s.loc);
+      return fromIP().then(hindiName).then(function (loc) {
+        var o = load() || {}; o.loc = loc; o.locTs = Date.now(); save(o); return loc;
+      });
+    }
+    function weather(loc) {
+      var q = "latitude=" + loc.lat + "&longitude=" + loc.lon;
+      var w = getJSON("https://api.open-meteo.com/v1/forecast?" + q + "&current=temperature_2m,weather_code,is_day");
+      var a = getJSON("https://air-quality-api.open-meteo.com/v1/air-quality?" + q + "&hourly=pm10,pm2_5&past_days=1&forecast_days=1&timezone=GMT")
+        .catch(function () { return null; });
+      return Promise.all([w, a]).then(function (r) {
+        var cur = r[0].current || {}, aqi = null;
+        if (r[1] && r[1].hourly) {
+          var t = r[1].hourly.time.map(function (x) { return x + "Z"; });
+          var p25 = sub(avg24(t, r[1].hourly.pm2_5), "pm25"), p10 = sub(avg24(t, r[1].hourly.pm10), "pm10");
+          if (p25 != null || p10 != null) aqi = Math.max(p25 || 0, p10 || 0);
+        }
+        var o = load() || {};
+        o.loc = loc; o.temp = cur.temperature_2m; o.code = cur.weather_code; o.day = cur.is_day === 1;
+        o.aqi = aqi; o.ts = Date.now(); save(o); return o;
+      });
+    }
+    function refresh(force) {
+      return locate(force).then(weather).then(function (o) { state = o; render(); }).catch(function () { if (!state) box.hidden = true; });
+    }
+    var cached = load();
+    if (cached && cached.temp != null) { state = cached; render(); }
+    if (!cached || !cached.ts || Date.now() - cached.ts > 30 * 60e3 || !cached.loc) refresh(false);
+    setInterval(function () { if (!document.hidden) refresh(false); }, 30 * 60e3);
+
+    // शहर बदलना
+    var btn = document.getElementById("wx-city"), form = document.getElementById("cityform"),
+        input = document.getElementById("city-input"), msg = document.getElementById("city-msg");
+    btn.addEventListener("click", function () {
+      form.hidden = !form.hidden; btn.setAttribute("aria-expanded", String(!form.hidden)); msg.textContent = "";
+      if (!form.hidden) { input.value = ""; input.focus(); }
+    });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = input.value.trim(); if (!name) return;
+      var hi = document.documentElement.lang === "hi";
+      msg.textContent = "";
+      getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(name)).then(function (d) {
+        var r = d.results && d.results[0];
+        if (!r) { msg.textContent = hi ? "यह शहर नहीं मिला, अंग्रेज़ी में लिखकर देखें।" : "City not found. Try another spelling."; return; }
+        var loc = { en: r.name, lat: r.latitude, lon: r.longitude, manual: true };
+        return hindiName(loc).then(function (l) {
+          var o = load() || {}; o.loc = l; o.locTs = Date.now(); save(o);
+          form.hidden = true; btn.setAttribute("aria-expanded", "false");
+          return weather(l).then(function (o2) { state = o2; render(); });
+        });
+      }).catch(function () { msg.textContent = hi ? "अभी जुड़ नहीं पाए, थोड़ी देर बाद कोशिश करें।" : "Couldn't connect. Please try again later."; });
+    });
+    document.getElementById("city-auto").addEventListener("click", function () {
+      var o = load() || {}; delete o.loc; save(o);
+      form.hidden = true; btn.setAttribute("aria-expanded", "false");
+      refresh(true);
+    });
+    window.__espilaWx = { render: render };
+  })();
+
+  var more = document.getElementById("more"), moreBtn = more.querySelector(".more-btn");
+  moreBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var o = more.classList.toggle("open"); moreBtn.setAttribute("aria-expanded", String(o));
+  });
+  document.addEventListener("click", function (e) {
+    if (!more.contains(e.target)) { more.classList.remove("open"); moreBtn.setAttribute("aria-expanded", "false"); }
+  });
+
+  var signin = document.getElementById("signin");
+  var request = document.getElementById("request");
+  function route() {
+    var showReq = location.hash === "#request";
+    request.hidden = !showReq;
+    signin.hidden = showReq;
+    if (showReq) { var f = document.getElementById("rq-name"); if (f) f.focus({ preventScroll: true }); }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+  document.getElementById("back-btn").addEventListener("click", function () {
+    history.pushState("", "", location.pathname + location.search); route();
+  });
+  route();
+
+  var form = document.getElementById("invite-form");
+  var status = document.getElementById("form-status");
+  function show(text, isErr) {
+    status.textContent = text;
+    status.className = "status show" + (isErr ? " err" : "");
+  }
+
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var d = {
+      name: form.name.value.trim(),
+      preferred: form.preferred.value.trim().toLowerCase(),
+      email: form.email.value.trim(),
+      mobile: form.mobile.value.trim(),
+      referred_by: form.referred_by.value.trim()
+    };
+    if (!d.name || !d.preferred || !d.email || !d.mobile) return show(msg("missing"), true);
+    if (!/^[a-z0-9]([a-z0-9.-]{0,38}[a-z0-9])?$/.test(d.preferred)) return show(msg("badAddr"), true);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return show(msg("badEmail"), true);
+
+    var body =
+      "Name: " + d.name + "\n" +
+      "Preferred address: " + d.preferred + "@espilamail.com\n" +
+      "Current email: " + d.email + "\n" +
+      "Mobile: " + d.mobile + "\n" +
+      "Referred by: " + (d.referred_by || "-") + "\n";
+
+    if (!FORM_ENDPOINT) {
+      window.location.href = "mailto:" + INVITE_TO +
+        "?subject=" + encodeURIComponent("Espila family: " + d.preferred + "@espilamail.com") +
+        "&body=" + encodeURIComponent(body);
+      return show(msg("opened"), false);
+    }
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify(Object.assign({ _subject: "Invitation request: " + d.preferred }, d))
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      form.reset();
+      show(msg("sent"), false);
+    }).catch(function () { show(msg("failed"), true); });
+  });
+})();
+</script>
+</body>
+</html>
