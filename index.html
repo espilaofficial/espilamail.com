@@ -33,15 +33,15 @@ header{z-index:3 !important;position:relative;width:100%;padding:12px 28px 0;dis
 .lang button[aria-pressed="true"]{color:var(--accent);font-weight:800}
 .lang>span{color:#D4D4D4}
 .more{position:static}
-.ctry{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#4A4A4A;white-space:nowrap}
+.ctry{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:800;color:#3A3A3A;white-space:nowrap}
 .ctry[hidden]{display:none}
-.ctry-sep{width:1px;height:16px;background:#D4D4D4}
-.flag{display:inline-flex;width:24px;height:18px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.12);flex:none}
+.ctry-sep{width:1.5px;height:18px;background:#A8A8A8;border-radius:1px}
+.flag{display:inline-flex;width:33px;height:24px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.12);flex:none}
 .flag svg{width:100%;height:100%;display:block}
 .flag{position:relative}
 .flag.wave svg{transform-origin:0 50%;animation:flagwave 1.1s ease-in-out infinite}
-.flag.wave::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(255,255,255,0) 15%,rgba(255,255,255,.38) 35%,rgba(0,0,0,.14) 55%,rgba(255,255,255,0) 75%);background-size:250% 100%;animation:flagshine 1.1s linear infinite}
-@keyframes flagwave{0%,100%{transform:perspective(70px) rotateY(0) skewY(0)}30%{transform:perspective(70px) rotateY(-14deg) skewY(2.5deg)}65%{transform:perspective(70px) rotateY(9deg) skewY(-2deg)}}
+.flag.wave::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(255,255,255,0) 10%,rgba(255,255,255,.55) 32%,rgba(0,0,0,.22) 55%,rgba(255,255,255,0) 78%);background-size:250% 100%;animation:flagshine 1.1s linear infinite}
+@keyframes flagwave{0%,100%{transform:perspective(80px) rotateY(0) skewY(0) scaleY(1)}25%{transform:perspective(80px) rotateY(-24deg) skewY(5deg) scaleY(.94)}55%{transform:perspective(80px) rotateY(0) skewY(0) scaleY(1)}80%{transform:perspective(80px) rotateY(16deg) skewY(-4deg) scaleY(.96)}}
 @keyframes flagshine{0%{background-position:120% 0}100%{background-position:-120% 0}}
 @media (prefers-reduced-motion:reduce){.flag.wave svg,.flag.wave::after{animation:none}}
 
