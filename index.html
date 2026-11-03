@@ -57,8 +57,19 @@ main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:16px 16px 36px;disp
 .cards{width:100%;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify-content:center}
 .card{flex:1 1 280px;max-width:320px;background:rgba(255,255,255,.94);border:1px solid var(--card-line);border-radius:14px;padding:24px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 14px 34px rgba(123,44,245,.10),0 2px 6px rgba(43,43,43,.05)}
 .card h1,.card h2{font-size:18px;font-weight:700}
-.card-center{display:flex;flex-direction:column;justify-content:space-between;gap:22px;max-width:350px;min-height:380px;padding:26px 30px 26px}
+.card-center{display:flex;flex-direction:column;justify-content:space-between;gap:22px;max-width:350px;min-height:410px;padding:22px 26px 26px}
 .clock{text-align:center}
+.wx{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 8px;font-size:13px;font-weight:600;color:#6A6A6A;min-height:26px}
+.wx[hidden],#wxwrap[hidden]{display:none}
+.wx .aq{border-radius:999px;padding:3px 10px;font-weight:800;border:1px solid transparent;white-space:nowrap}
+.wx .city{background:none;border:0;font:inherit;font-weight:600;color:#8A8A8A;cursor:pointer;padding:2px 0;border-bottom:1px dashed #C9C9C9}
+.wx .city:hover{color:var(--accent)}
+.cityform{display:flex;flex-direction:row;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.cityform[hidden]{display:none}
+.cityform input{width:150px;flex:0 0 150px;min-height:32px;font-size:13px}
+.cityform button{flex:0 0 auto;min-height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--accent);background:#fff;color:var(--accent);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.cityform .auto{border:0;color:#8A8A8A;font-weight:600;text-decoration:underline;padding:0 4px}
+.cityform .msg{width:100%;text-align:center;font-size:11px;color:#B3261E}
 .greet{font-size:18px;font-weight:600;color:#666;text-align:center}
 .time{display:flex;flex-direction:column;align-items:center;gap:6px;line-height:1}
 .time .hm{position:relative;font-size:54px;font-weight:700;letter-spacing:-.01em;color:#5A5A5A;font-variant-numeric:tabular-nums}
@@ -163,6 +174,15 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 
     <div class="cards">
       <section class="card card-center" id="signin" aria-label="Sign in">
+        <div id="wxwrap" hidden>
+          <p class="wx" id="wx" hidden aria-live="polite"><span id="wx-temp"></span><span class="aq" id="wx-aqi"></span><button type="button" class="city" id="wx-city" aria-expanded="false" aria-controls="cityform"></button></p>
+          <form class="cityform" id="cityform" hidden>
+            <input id="city-input" type="text" autocomplete="address-level2" data-tp="cityPh" placeholder="City name">
+            <button type="submit" data-t="cityOk">OK</button>
+            <button type="button" class="auto" id="city-auto" data-t="cityAuto">Auto</button>
+            <span class="msg" id="city-msg"></span>
+          </form>
+        </div>
         <p class="greet" id="greet"></p>
         <div>
           <div class="clock" aria-live="off">
@@ -276,6 +296,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       moreLang: "70+ भाषाएँ", popTitle: "आपका मेलबॉक्स आपकी भाषा में",
       popIn: "8 भारतीय भाषाएँ + English", popFo: "65 से ज़्यादा विदेशी भाषाएँ",
       popHow: "साइन इन के बाद: सेटिंग्स → सामान्य → भाषा।",
+      cityOk: "ठीक", cityAuto: "अपने-आप",
       missing: "कृपया सभी ज़रूरी खाने भरें।", badEmail: "कृपया सही ईमेल पता लिखें।",
       badAddr: "पसंदीदा पते में सिर्फ़ अंग्रेज़ी अक्षर, अंक, बिंदु (.) या हाइफ़न (-) हों।",
       opened: "आपका ईमेल ऐप खुल गया है, वहाँ से मेल भेज दीजिए।",
@@ -308,6 +329,9 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       b.setAttribute("aria-pressed", String(b.getAttribute("data-set-lang") === l));
     });
     renderClock();
+    var ci = document.getElementById("city-input");
+    if (ci) ci.placeholder = l === "hi" ? "शहर का नाम" : "City name";
+    if (window.__espilaWx) window.__espilaWx.render();
     try { localStorage.setItem("espila-lang", l); } catch (e) {}
   }
 
@@ -350,6 +374,160 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
   });
   applyLang(lang);
   tick();
+
+  // मौसम और हवा (AQI): IP से शहर → न मिले तो समय क्षेत्र → न मिले तो दिल्ली। व्यक्ति खुद शहर चुन सकता है।
+  (function () {
+    var KEY = "espila-wx", DELHI = { en: "Delhi", hi: "दिल्ली", lat: 28.6139, lon: 77.2090 };
+    var box = document.getElementById("wx"); if (!box) return;
+    var state = null, wrap = document.getElementById("wxwrap");
+    function sync() { var f = document.getElementById("cityform"); wrap.hidden = box.hidden && (!f || f.hidden); }
+    function load() { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } }
+    function save(o) { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
+    function getJSON(url) {
+      return fetch(url, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+    }
+    // भारत (CPCB) का AQI — PM2.5 और PM10 के 24 घंटे के औसत से
+    var BP = {
+      pm25: [[0,30,0,50],[30,60,50,100],[60,90,100,200],[90,120,200,300],[120,250,300,400],[250,500,400,500]],
+      pm10: [[0,50,0,50],[50,100,50,100],[100,250,100,200],[250,350,200,300],[350,430,300,400],[430,1000,400,500]]
+    };
+    function sub(c, t) {
+      if (c == null || isNaN(c)) return null;
+      var b = BP[t];
+      for (var i = 0; i < b.length; i++) if (c <= b[i][1]) return b[i][2] + (c - b[i][0]) * (b[i][3] - b[i][2]) / (b[i][1] - b[i][0]);
+      return 500;
+    }
+    function avg24(times, vals) {
+      var now = Date.now(), sum = 0, n = 0;
+      for (var i = 0; i < times.length; i++) {
+        var t = new Date(times[i]).getTime();
+        if (t <= now && t > now - 24 * 3600e3 && vals[i] != null) { sum += vals[i]; n++; }
+      }
+      return n >= 8 ? sum / n : null;
+    }
+    var CATS = [
+      [50, "अच्छा", "Good", "#2E7D32", "#E8F5E9"],
+      [100, "संतोषजनक", "Satisfactory", "#558B2F", "#F1F8E9"],
+      [200, "मध्यम", "Moderate", "#B26A00", "#FFF4E0"],
+      [300, "ख़राब", "Poor", "#D84315", "#FBE9E7"],
+      [400, "बहुत ख़राब", "Very Poor", "#B71C1C", "#FDECEC"],
+      [9999, "गंभीर", "Severe", "#6A1B1B", "#F3E5E5"]
+    ];
+    function icon(code, day) {
+      if (code === 0) return day ? "☀" : "🌙";
+      if (code <= 2) return day ? "🌤" : "☁";
+      if (code === 3) return "☁";
+      if (code === 45 || code === 48) return "🌫";
+      if (code >= 95) return "⛈";
+      if (code >= 71 && code <= 77) return "❄";
+      if (code >= 80) return "🌦";
+      if (code >= 51) return "🌧";
+      return "🌤";
+    }
+    function render() {
+      if (!state || state.temp == null) { box.hidden = true; sync(); return; }
+      var hi = document.documentElement.lang === "hi";
+      document.getElementById("wx-temp").textContent = icon(state.code, state.day) + " " + Math.round(state.temp) + "°";
+      var aq = document.getElementById("wx-aqi");
+      if (state.aqi != null) {
+        var a = Math.round(state.aqi), c = CATS[0];
+        for (var i = 0; i < CATS.length; i++) if (a <= CATS[i][0]) { c = CATS[i]; break; }
+        aq.textContent = (hi ? "हवा " : "AQI ") + a + " · " + (hi ? c[1] : c[2]);
+        aq.style.color = c[3]; aq.style.background = c[4]; aq.style.borderColor = c[3] + "33";
+        aq.hidden = false;
+      } else aq.hidden = true;
+      var loc = state.loc || DELHI;
+      document.getElementById("wx-city").textContent = ((hi ? loc.hi : loc.en) || loc.en || loc.hi) + " ▾";
+      box.hidden = false; sync();
+    }
+    function hindiName(loc) {
+      if (loc.hi) return Promise.resolve(loc);
+      return getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=hi&name=" + encodeURIComponent(loc.en))
+        .then(function (d) { if (d.results && d.results[0]) loc.hi = d.results[0].name; return loc; })
+        .catch(function () { return loc; });
+    }
+    function fromTimezone() {
+      var tz = "";
+      try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+      if (!tz || /^Asia\/(Kolkata|Calcutta)$/.test(tz)) return Promise.resolve(DELHI);
+      var name = tz.split("/").pop().replace(/_/g, " ");
+      return getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(name))
+        .then(function (d) { var r = d.results && d.results[0]; if (!r) return DELHI; return { en: r.name, lat: r.latitude, lon: r.longitude }; })
+        .catch(function () { return DELHI; });
+    }
+    function fromIP() {
+      return getJSON("https://get.geojs.io/v1/ip/geo.json").then(function (d) {
+        if (!d.city || !d.latitude) throw new Error("no city");
+        return { en: d.city, lat: +d.latitude, lon: +d.longitude };
+      }).catch(function () {
+        return getJSON("https://ipwho.is/").then(function (d) {
+          if (!d.success || !d.city) throw new Error("no city");
+          return { en: d.city, lat: d.latitude, lon: d.longitude };
+        });
+      }).catch(fromTimezone);
+    }
+    function locate(force) {
+      var s = load();
+      if (!force && s && s.loc && (s.loc.manual || Date.now() - (s.locTs || 0) < 12 * 3600e3)) return Promise.resolve(s.loc);
+      return fromIP().then(hindiName).then(function (loc) {
+        var o = load() || {}; o.loc = loc; o.locTs = Date.now(); save(o); return loc;
+      });
+    }
+    function weather(loc) {
+      var q = "latitude=" + loc.lat + "&longitude=" + loc.lon;
+      var w = getJSON("https://api.open-meteo.com/v1/forecast?" + q + "&current=temperature_2m,weather_code,is_day");
+      var a = getJSON("https://air-quality-api.open-meteo.com/v1/air-quality?" + q + "&hourly=pm10,pm2_5&past_days=1&forecast_days=1&timezone=GMT")
+        .catch(function () { return null; });
+      return Promise.all([w, a]).then(function (r) {
+        var cur = r[0].current || {}, aqi = null;
+        if (r[1] && r[1].hourly) {
+          var t = r[1].hourly.time.map(function (x) { return x + "Z"; });
+          var p25 = sub(avg24(t, r[1].hourly.pm2_5), "pm25"), p10 = sub(avg24(t, r[1].hourly.pm10), "pm10");
+          if (p25 != null || p10 != null) aqi = Math.max(p25 || 0, p10 || 0);
+        }
+        var o = load() || {};
+        o.loc = loc; o.temp = cur.temperature_2m; o.code = cur.weather_code; o.day = cur.is_day === 1;
+        o.aqi = aqi; o.ts = Date.now(); save(o); return o;
+      });
+    }
+    function refresh(force) {
+      return locate(force).then(weather).then(function (o) { state = o; render(); }).catch(function () { if (!state) { box.hidden = true; sync(); } });
+    }
+    var cached = load();
+    if (cached && cached.temp != null) { state = cached; render(); }
+    if (!cached || !cached.ts || Date.now() - cached.ts > 30 * 60e3 || !cached.loc) refresh(false);
+    setInterval(function () { if (!document.hidden) refresh(false); }, 30 * 60e3);
+
+    // शहर बदलना
+    var btn = document.getElementById("wx-city"), form = document.getElementById("cityform"),
+        input = document.getElementById("city-input"), msg = document.getElementById("city-msg");
+    btn.addEventListener("click", function () {
+      form.hidden = !form.hidden; btn.setAttribute("aria-expanded", String(!form.hidden)); msg.textContent = "";
+      if (!form.hidden) { input.value = ""; input.focus(); }
+    });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = input.value.trim(); if (!name) return;
+      var hi = document.documentElement.lang === "hi";
+      msg.textContent = "";
+      getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(name)).then(function (d) {
+        var r = d.results && d.results[0];
+        if (!r) { msg.textContent = hi ? "यह शहर नहीं मिला, अंग्रेज़ी में लिखकर देखें।" : "City not found. Try another spelling."; return; }
+        var loc = { en: r.name, lat: r.latitude, lon: r.longitude, manual: true };
+        return hindiName(loc).then(function (l) {
+          var o = load() || {}; o.loc = l; o.locTs = Date.now(); save(o);
+          form.hidden = true; btn.setAttribute("aria-expanded", "false");
+          return weather(l).then(function (o2) { state = o2; render(); });
+        });
+      }).catch(function () { msg.textContent = hi ? "अभी जुड़ नहीं पाए, थोड़ी देर बाद कोशिश करें।" : "Couldn't connect. Please try again later."; });
+    });
+    document.getElementById("city-auto").addEventListener("click", function () {
+      var o = load() || {}; delete o.loc; save(o);
+      form.hidden = true; btn.setAttribute("aria-expanded", "false");
+      refresh(true);
+    });
+    window.__espilaWx = { render: render };
+  })();
 
   var more = document.getElementById("more"), moreBtn = more.querySelector(".more-btn");
   moreBtn.addEventListener("click", function (e) {
