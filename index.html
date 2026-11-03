@@ -27,14 +27,28 @@ a:hover{color:var(--accent-dark);text-decoration:underline}
 .flora-tr{right:0;top:0;width:440px}
 .flora-bl{left:0;bottom:0;width:400px}
 header,main,footer{position:relative;z-index:1}
-header{z-index:3 !important;width:100%;padding:12px 28px 0;display:flex;justify-content:flex-end}
+header{z-index:3 !important;position:relative;width:100%;padding:12px 28px 0;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .lang{display:flex;align-items:center;font-size:12px}
 .lang button{background:none;border:0;font:inherit;font-weight:700;color:#4A4A4A;min-height:36px;padding:0 6px;cursor:pointer}
 .lang button[aria-pressed="true"]{color:var(--accent);font-weight:800}
 .lang>span{color:#D4D4D4}
-.more{position:relative}
+.more{position:static}
+.ctry{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#4A4A4A;white-space:nowrap}
+.ctry[hidden]{display:none}
+.ctry-sep{width:1px;height:16px;background:#D4D4D4}
+.flag{display:inline-flex;width:24px;height:18px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.12);flex:none}
+.flag svg{width:100%;height:100%;display:block}
+.flag{position:relative}
+.flag.wave svg{transform-origin:0 50%;animation:flagwave 1.1s ease-in-out infinite}
+.flag.wave::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(255,255,255,0) 15%,rgba(255,255,255,.38) 35%,rgba(0,0,0,.14) 55%,rgba(255,255,255,0) 75%);background-size:250% 100%;animation:flagshine 1.1s linear infinite}
+@keyframes flagwave{0%,100%{transform:perspective(70px) rotateY(0) skewY(0)}30%{transform:perspective(70px) rotateY(-14deg) skewY(2.5deg)}65%{transform:perspective(70px) rotateY(9deg) skewY(-2deg)}}
+@keyframes flagshine{0%{background-position:120% 0}100%{background-position:-120% 0}}
+@media (prefers-reduced-motion:reduce){.flag.wave svg,.flag.wave::after{animation:none}}
+
+.flag[hidden],.ctry-sep[hidden]{display:none}
+
 .more-btn{display:inline-flex;align-items:center;gap:4px}
-.lang-pop{position:absolute;right:0;top:100%;margin-top:6px;width:340px;max-width:calc(100vw - 32px);max-height:70vh;overflow:auto;background:#fff;border:1px solid var(--card-line);border-radius:12px;padding:14px 16px;box-shadow:0 14px 34px rgba(43,43,43,.14);text-align:left;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s,transform .15s;z-index:5}
+.lang-pop{position:absolute;left:28px;top:100%;margin-top:6px;width:340px;max-width:calc(100vw - 32px);max-height:70vh;overflow:auto;background:#fff;border:1px solid var(--card-line);border-radius:12px;padding:14px 16px;box-shadow:0 14px 34px rgba(43,43,43,.14);text-align:left;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s,transform .15s;z-index:5}
 .more:hover .lang-pop,.more.open .lang-pop,.more:focus-within .lang-pop{opacity:1;visibility:visible;transform:none}
 .lang-pop h3{font-size:13px;font-weight:800;color:var(--text);margin-bottom:8px}
 .lang-pop h4{font-size:11px;font-weight:800;color:var(--accent-dark);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px}
@@ -133,6 +147,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
   .copy{font-size:11px}
   .card{padding:20px 18px}
   header{padding:10px 16px 0}
+  .lang-pop{left:16px}
   .flora-tr{width:230px}
   .flora-bl{width:210px}
 }
@@ -161,6 +176,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
         </div>
       </div>
     </div>
+    <div class="ctry" id="ctry" hidden><span id="ctry-name"></span><span class="ctry-sep" id="ctry-sep" aria-hidden="true"></span><span class="flag" id="ctry-flag" role="img"></span></div>
   </header>
 
   <main>
@@ -377,7 +393,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 
   // मौसम और हवा (AQI): IP से शहर → न मिले तो समय क्षेत्र → न मिले तो दिल्ली। व्यक्ति खुद शहर चुन सकता है।
   (function () {
-    var KEY = "espila-wx", DELHI = { en: "Delhi", hi: "दिल्ली", lat: 28.6139, lon: 77.2090 };
+    var KEY = "espila-wx", DELHI = { en: "Delhi", hi: "दिल्ली", lat: 28.6139, lon: 77.2090, cc: "IN" };
     var box = document.getElementById("wx"); if (!box) return;
     var state = null, wrap = document.getElementById("wxwrap");
     function sync() { var f = document.getElementById("cityform"); wrap.hidden = box.hidden && (!f || f.hidden); }
@@ -425,7 +441,32 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       return "🌤";
     }
     function plain(t) { try { return String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, ""); } catch (e) { return t; } }
+    // देश का नाम और झंडा (ऊपर दाएँ कोने में)
+    var IN_FLAG = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 640 480"> <path fill="#f93" d="M0 0h640v160H0z"/> <path fill="#fff" d="M0 160h640v160H0z"/> <path fill="#128807" d="M0 320h640v160H0z"/> <g transform="matrix(3.2 0 0 3.2 320 240)"> <circle r="20" fill="#008"/> <circle r="17.5" fill="#fff"/> <circle r="3.5" fill="#008"/> <g id="in-d"> <g id="in-c"> <g id="in-b"> <g id="in-a" fill="#008"> <circle r=".9" transform="rotate(7.5 -8.8 133.5)"/> <path d="M0 17.5.6 7 0 2l-.6 5z"/> </g> <use xlink:href="#in-a" width="100%" height="100%" transform="rotate(15)"/> </g> <use xlink:href="#in-b" width="100%" height="100%" transform="rotate(30)"/> </g> <use xlink:href="#in-c" width="100%" height="100%" transform="rotate(60)"/> </g> <use xlink:href="#in-d" width="100%" height="100%" transform="rotate(120)"/> <use xlink:href="#in-d" width="100%" height="100%" transform="rotate(-120)"/> </g> </svg>';
+    function tzIndia() { try { return /^Asia\/(Kolkata|Calcutta)$/.test(Intl.DateTimeFormat().resolvedOptions().timeZone); } catch (e) { return false; } }
+    var flagsLoading = false;
+    function country() {
+      var loc = (state && state.loc) || (load() || {}).loc || null;
+      var cc = (loc && loc.cc) || (tzIndia() ? "IN" : null);
+      var wrapC = document.getElementById("ctry");
+      if (!cc) { wrapC.hidden = true; return; }
+      cc = String(cc).toUpperCase();
+      var hi = document.documentElement.lang === "hi", name = cc;
+      try { name = new Intl.DisplayNames([hi ? "hi" : "en"], { type: "region" }).of(cc) || cc; } catch (e) {}
+      if (cc === "IN") name = hi ? "भारत" : "India";
+      document.getElementById("ctry-name").textContent = name;
+      var f = document.getElementById("ctry-flag"), sep = document.getElementById("ctry-sep");
+      var svg = cc === "IN" ? IN_FLAG : (window.ESPILA_FLAGS && window.ESPILA_FLAGS[cc]);
+      if (!svg && cc !== "IN" && !window.ESPILA_FLAGS && !flagsLoading) {
+        flagsLoading = true;
+        var sc = document.createElement("script"); sc.src = "flags.js"; sc.onload = country; document.head.appendChild(sc);
+      }
+      f.innerHTML = svg || ""; f.hidden = !svg; sep.hidden = !svg;
+      f.setAttribute("aria-label", name);
+      wrapC.hidden = false;
+    }
     function render() {
+      country();
       if (!state || state.temp == null) { box.hidden = true; sync(); return; }
       var hi = document.documentElement.lang === "hi";
       document.getElementById("wx-temp").textContent = icon(state.code, state.day) + " " + Math.round(state.temp) + "°";
@@ -453,17 +494,17 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       if (!tz || /^Asia\/(Kolkata|Calcutta)$/.test(tz)) return Promise.resolve(DELHI);
       var name = tz.split("/").pop().replace(/_/g, " ");
       return getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(name))
-        .then(function (d) { var r = d.results && d.results[0]; if (!r) return DELHI; return { en: r.name, lat: r.latitude, lon: r.longitude }; })
+        .then(function (d) { var r = d.results && d.results[0]; if (!r) return DELHI; return { en: r.name, lat: r.latitude, lon: r.longitude, cc: r.country_code }; })
         .catch(function () { return DELHI; });
     }
     function fromIP() {
       return getJSON("https://get.geojs.io/v1/ip/geo.json").then(function (d) {
         if (!d.city || !d.latitude) throw new Error("no city");
-        return { en: d.city, lat: +d.latitude, lon: +d.longitude };
+        return { en: d.city, lat: +d.latitude, lon: +d.longitude, cc: d.country_code };
       }).catch(function () {
         return getJSON("https://ipwho.is/").then(function (d) {
           if (!d.success || !d.city) throw new Error("no city");
-          return { en: d.city, lat: d.latitude, lon: d.longitude };
+          return { en: d.city, lat: d.latitude, lon: d.longitude, cc: d.country_code };
         });
       }).catch(fromTimezone);
     }
@@ -495,7 +536,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       return locate(force).then(weather).then(function (o) { state = o; render(); }).catch(function () { if (!state) { box.hidden = true; sync(); } });
     }
     var cached = load();
-    if (cached && cached.temp != null) { state = cached; render(); }
+    if (cached && cached.temp != null) { state = cached; render(); } else country();
     if (!cached || !cached.ts || Date.now() - cached.ts > 30 * 60e3 || !cached.loc) refresh(false);
     setInterval(function () { if (!document.hidden) refresh(false); }, 30 * 60e3);
 
@@ -514,7 +555,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(name)).then(function (d) {
         var r = d.results && d.results[0];
         if (!r) { msg.textContent = hi ? "यह शहर नहीं मिला, अंग्रेज़ी में लिखकर देखें।" : "City not found. Try another spelling."; return; }
-        var loc = { en: r.name, lat: r.latitude, lon: r.longitude, manual: true };
+        var loc = { en: r.name, lat: r.latitude, lon: r.longitude, cc: r.country_code, manual: true };
         return hindiName(loc).then(function (l) {
           var o = load() || {}; o.loc = l; o.locTs = Date.now(); save(o);
           form.hidden = true; btn.setAttribute("aria-expanded", "false");
@@ -527,6 +568,31 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       form.hidden = true; btn.setAttribute("aria-expanded", "false");
       refresh(true);
     });
+
+    // झंडा लहराना: खुलते समय एक बार, छूने पर, और 26 जनवरी व 15 अगस्त को पूरे दिन (सिर्फ़ तिरंगा)
+    var flagEl = document.getElementById("ctry-flag"), waveT = null;
+    function nationalDay(cc) {
+      if (cc !== "IN") return false;
+      var d = new Date(), m = d.getMonth() + 1, day = d.getDate();
+      return (m === 1 && day === 26) || (m === 8 && day === 15);
+    }
+    function waveOnce(ms) {
+      if (flagEl.classList.contains("allday")) return;
+      flagEl.classList.add("wave"); clearTimeout(waveT);
+      waveT = setTimeout(function () { if (!flagEl.classList.contains("allday")) flagEl.classList.remove("wave"); }, ms || 2600);
+    }
+    function waveCheck() {
+      var loc = (state && state.loc) || (load() || {}).loc || null;
+      var cc = String((loc && loc.cc) || (tzIndia() ? "IN" : "")).toUpperCase();
+      var all = nationalDay(cc);
+      flagEl.classList.toggle("allday", all);
+      if (all) flagEl.classList.add("wave");
+    }
+    flagEl.addEventListener("mouseenter", function () { waveOnce(); });
+    flagEl.addEventListener("touchstart", function () { waveOnce(); }, { passive: true });
+    flagEl.addEventListener("click", function () { waveOnce(); });
+    setTimeout(function () { waveCheck(); waveOnce(2600); }, 400);
+    setInterval(waveCheck, 10 * 60e3);
     window.__espilaWx = { render: render };
   })();
 
