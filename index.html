@@ -424,6 +424,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       if (code >= 51) return "🌧";
       return "🌤";
     }
+    function plain(t) { try { return String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, ""); } catch (e) { return t; } }
     function render() {
       if (!state || state.temp == null) { box.hidden = true; sync(); return; }
       var hi = document.documentElement.lang === "hi";
@@ -437,7 +438,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
         aq.hidden = false;
       } else aq.hidden = true;
       var loc = state.loc || DELHI;
-      document.getElementById("wx-city").textContent = ((hi ? loc.hi : loc.en) || loc.en || loc.hi) + " ▾";
+      document.getElementById("wx-city").textContent = (hi ? (loc.hi || plain(loc.en)) : plain(loc.en || loc.hi)) + " ▾";
       box.hidden = false; sync();
     }
     function hindiName(loc) {
