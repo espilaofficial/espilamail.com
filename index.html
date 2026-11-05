@@ -211,6 +211,11 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 .diwali-full .side-mala{display:none}
 @media (min-width:1000px){.diwali-full .side-mala{display:block;position:absolute;top:150px;width:34px;height:340px;z-index:3;pointer-events:none}.sm-l{left:6px}.sm-r{right:6px}}
 @media (prefers-reduced-motion:reduce){.rangoli .rg,.fdiya .ff{animation:none;opacity:1}}
+.wa-check{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--label);margin-top:-2px;cursor:pointer}
+#rq-wa[readonly]{background:#F6F4FA;color:#555}
+.wa-check input{width:16px;height:16px;min-height:0;margin:0;accent-color:var(--accent)}
+.wa-note{font-size:11px;color:var(--muted);margin-top:-4px}
+#wa-field[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -307,6 +312,12 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
               <input id="rq-mob" name="mobile" type="tel" autocomplete="tel" placeholder="+91" required>
             </div>
           </div>
+          <label class="wa-check"><input type="checkbox" id="rq-wa-same"> <span data-t="waSame">I use WhatsApp on this number</span></label>
+          <div class="field" id="wa-field">
+            <label for="rq-wa" data-t="fWa">WhatsApp number</label>
+            <input id="rq-wa" name="whatsapp" type="tel" autocomplete="tel" placeholder="+91" required>
+          </div>
+          <p class="wa-note" data-t="waNote">Your account details will be sent to you on WhatsApp.</p>
           <div class="field">
             <label for="rq-ref"><span data-t="fRef">Referred by</span> <small data-t="optional">(optional)</small></label>
             <input id="rq-ref" name="referred_by" type="text">
@@ -376,6 +387,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       back: "← साइन इन पर वापस", reqTitle: "खाता बनवाएँ", reqSub: "अपनी जानकारी भेजिए, हम आपका खाता बनाकर बताएँगे।",
       fName: "पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
       fRef: "किसने भेजा", optional: "(वैकल्पिक)", send: "भेजें",
+      waSame: "इसी नंबर पर मेरा WhatsApp है", fWa: "WhatsApp नंबर", waNote: "आपके खाते की जानकारी WhatsApp पर भेजी जाएगी।", badWa: "कृपया अपना WhatsApp नंबर लिखें।",
       agree: "भेजकर आप हमारी", terms: "शर्तें", and: "और", privacy: "गोपनीयता नीति",
       privacyShort: "गोपनीयता", help: "मदद", grievance: "शिकायत", suggestions: "सुझाव",
       rights: "सर्वाधिकार सुरक्षित।",
@@ -394,7 +406,8 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       badAddr: "The preferred address may only use English letters, numbers, dot (.) or hyphen (-).",
       opened: "Your email app has opened — please send the message from there.",
       sent: "Thank you! We'll be in touch soon.",
-      failed: "Could not send your details. Please write to invite@espilamail.com."
+      failed: "Could not send your details. Please write to invite@espilamail.com.",
+      badWa: "Please enter your WhatsApp number."
     }
   };
   var original = {};
@@ -700,6 +713,16 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     status.className = "status show" + (isErr ? " err" : "");
   }
 
+  var waSame = document.getElementById("rq-wa-same"), waField = document.getElementById("wa-field"), waIn = document.getElementById("rq-wa");
+  var mobIn = document.getElementById("rq-mob");
+  function syncWa() {
+    if (waSame.checked) { waIn.value = mobIn.value; waIn.readOnly = true; }
+    else { waIn.readOnly = false; }
+  }
+  waSame.addEventListener("change", function () {
+    if (!waSame.checked) { waIn.value = ""; waIn.readOnly = false; waIn.focus(); } else syncWa();
+  });
+  mobIn.addEventListener("input", function () { if (waSame.checked) syncWa(); });
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
     var d = {
@@ -709,7 +732,9 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       mobile: form.mobile.value.trim(),
       referred_by: form.referred_by.value.trim()
     };
+    d.whatsapp = waIn.value.trim();
     if (!d.name || !d.preferred || !d.email || !d.mobile) return show(msg("missing"), true);
+    if (!d.whatsapp) return show(msg("badWa"), true);
     if (!/^[a-z0-9]([a-z0-9.-]{0,38}[a-z0-9])?$/.test(d.preferred)) return show(msg("badAddr"), true);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return show(msg("badEmail"), true);
 
@@ -718,6 +743,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       "Preferred address: " + d.preferred + "@espilamail.com\n" +
       "Current email: " + d.email + "\n" +
       "Mobile: " + d.mobile + "\n" +
+      "WhatsApp: " + d.whatsapp + (waSame.checked ? " (same as mobile)" : "") + "\n" +
       "Referred by: " + (d.referred_by || "-") + "\n";
 
     if (!FORM_ENDPOINT) {
@@ -732,7 +758,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       body: JSON.stringify(Object.assign({ _subject: "Invitation request: " + d.preferred }, d))
     }).then(function (r) {
       if (!r.ok) throw new Error(r.status);
-      form.reset();
+      form.reset(); waIn.readOnly = false;
       show(msg("sent"), false);
     }).catch(function () { show(msg("failed"), true); });
   });
