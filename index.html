@@ -175,11 +175,48 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 .diwali #fireworks{display:block}
 @media (max-width:640px){.diya{width:38px;height:48px}.diyas{gap:10px}.diwali header{padding-top:60px}}
 @media (prefers-reduced-motion:reduce){.diya .flame,.diya .glow{animation:none}}
+
+/* ===== पूरी जगमग: 6–10 नवंबर ===== */
+.cards{position:relative}
+.sl,.slm,.fdiyas,.fl-corner,.side-mala,.rangoli{display:none}
+.diya-stage{position:relative;display:flex;justify-content:center}
+.diwali-full .rangoli{display:block;position:absolute;left:50%;bottom:-74px;transform:translateX(-50%);width:360px;height:130px;z-index:0;overflow:visible}
+.diwali-full .diyas{position:relative;z-index:1;padding-bottom:0}
+.diwali-full .diya-stage{margin-top:6px;margin-bottom:84px}
+.rangoli .rg{transform-box:fill-box;transform-origin:center;animation:rgin .9s ease-out both}
+@keyframes rgin{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+.sl{position:absolute;top:50%;transform:translateY(-50%);flex-direction:column;align-items:center;gap:6px;font-family:'Noto Sans Devanagari','Nunito',sans-serif;color:#B71C1C;pointer-events:none}
+.sl-left{left:2%}.sl-right{right:2%}
+.sl .sl-top{font-size:30px;font-weight:800;color:#C77700}
+.sl .sl-word{font-size:40px;font-weight:800;letter-spacing:.02em;text-shadow:0 2px 0 rgba(255,193,7,.35)}
+.sl .swastik{width:66px;height:66px;display:none}
+.in-india .sl .swastik{display:block}
+@media (min-width:900px){.diwali-full .sl{display:flex}}
+.slm{position:absolute;top:8px;align-items:center;gap:4px;font-family:'Noto Sans Devanagari',sans-serif;color:#B71C1C;font-size:15px}
+.slm b{font-weight:800}
+.slm .swastik{width:16px;height:16px;display:none}
+.in-india .slm .swastik{display:block}
+.slm-l{right:calc(100% + 10px)}.slm-r{left:calc(100% + 10px)}
+.brand{position:relative}
+@media (max-width:899px){.diwali-full .slm{display:flex}}
+.diwali-full .fdiyas{display:flex;position:absolute;left:0;right:0;top:-24px;justify-content:space-evenly;pointer-events:none}
+.fdiya{width:22px;height:28px}
+.fdiya svg{width:100%;height:100%;overflow:visible;display:block}
+.fdiya .ff{opacity:0;transform-origin:11px 15px;animation:light .35s ease-out forwards,flick 1.5s ease-in-out infinite}
+@keyframes light{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}
+.diwali-full footer{padding-top:14px}
+.diwali-full .fl-corner{display:block;position:absolute;bottom:0;width:150px;height:110px;z-index:1;pointer-events:none}
+.fl-bl{left:0}.fl-br{right:0;transform:scaleX(-1)}
+@media (max-width:640px){.diwali-full .fl-corner{width:92px;height:70px}.diwali-full .rangoli{width:290px;height:105px;bottom:-60px}.diwali-full .diya-stage{margin-bottom:70px}.fdiya{width:18px;height:23px}.diwali-full .fdiyas{top:-20px}}
+.diwali-full .side-mala{display:none}
+@media (min-width:1000px){.diwali-full .side-mala{display:block;position:absolute;top:150px;width:34px;height:340px;z-index:3;pointer-events:none}.sm-l{left:6px}.sm-r{right:6px}}
+@media (prefers-reduced-motion:reduce){.rangoli .rg,.fdiya .ff{animation:none;opacity:1}}
 </style>
 </head>
 <body>
 <div class="page">
   <svg class="toran" id="toran" aria-hidden="true"></svg>
+  <svg class="fl-corner fl-bl" id="fl-bl" aria-hidden="true"></svg><svg class="fl-corner fl-br" id="fl-br" aria-hidden="true"></svg><svg class="side-mala sm-l" id="sm-l" aria-hidden="true"></svg><svg class="side-mala sm-r" id="sm-r" aria-hidden="true"></svg>
   <canvas id="fireworks" aria-hidden="true"></canvas>
   <img class="flora flora-tr" src="flora-tr.webp" alt="" aria-hidden="true">
   <img class="flora flora-bl" src="flora-bl.webp" alt="" aria-hidden="true">
@@ -207,6 +244,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 
   <main>
     <div class="brand">
+      <span class="slm slm-l" aria-hidden="true"><svg class="swastik" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#C62828" stroke-width="9" stroke-linecap="square"><path d="M50 50V12H86"/><path d="M50 50H88V86"/><path d="M50 50V88H14"/><path d="M50 50H12V14"/></g><g fill="#C62828"><circle cx="31" cy="31" r="5.5"/><circle cx="69" cy="31" r="5.5"/><circle cx="69" cy="69" r="5.5"/><circle cx="31" cy="69" r="5.5"/></g></svg><b>शुभ</b></span><span class="slm slm-r" aria-hidden="true"><svg class="swastik" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#C62828" stroke-width="9" stroke-linecap="square"><path d="M50 50V12H86"/><path d="M50 50H88V86"/><path d="M50 50V88H14"/><path d="M50 50H12V14"/></g><g fill="#C62828"><circle cx="31" cy="31" r="5.5"/><circle cx="69" cy="31" r="5.5"/><circle cx="69" cy="69" r="5.5"/><circle cx="31" cy="69" r="5.5"/></g></svg><b>लाभ</b></span>
       <div class="brand-row">
         <span class="logo">Espila</span>
         <span class="mail">Mail<sup class="tm" aria-label="trademark">™</sup><button type="button" class="seed" aria-label="Seed phase — something is growing"><img src="seed.png" alt=""><span class="tip" data-t="seedTip">Seed phase — something is growing…</span></button></span>
@@ -215,6 +253,8 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     </div>
 
     <div class="cards">
+      <div class="sl sl-left" aria-hidden="true"><span class="sl-top">ॐ</span><svg class="swastik" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#C62828" stroke-width="9" stroke-linecap="square"><path d="M50 50V12H86"/><path d="M50 50H88V86"/><path d="M50 50V88H14"/><path d="M50 50H12V14"/></g><g fill="#C62828"><circle cx="31" cy="31" r="5.5"/><circle cx="69" cy="31" r="5.5"/><circle cx="69" cy="69" r="5.5"/><circle cx="31" cy="69" r="5.5"/></g></svg><span class="sl-word">शुभ</span></div>
+      <div class="sl sl-right" aria-hidden="true"><span class="sl-top">श्री</span><svg class="swastik" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#C62828" stroke-width="9" stroke-linecap="square"><path d="M50 50V12H86"/><path d="M50 50H88V86"/><path d="M50 50V88H14"/><path d="M50 50H12V14"/></g><g fill="#C62828"><circle cx="31" cy="31" r="5.5"/><circle cx="69" cy="31" r="5.5"/><circle cx="69" cy="69" r="5.5"/><circle cx="31" cy="69" r="5.5"/></g></svg><span class="sl-word">लाभ</span></div>
       <section class="card card-center" id="signin" aria-label="Sign in">
         <div id="wxwrap" hidden>
           <p class="wx" id="wx" hidden aria-live="polite"><span id="wx-temp"></span><span class="aq" id="wx-aqi"></span><button type="button" class="city" id="wx-city" aria-expanded="false" aria-controls="cityform"></button></p>
@@ -278,11 +318,12 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       </section>
     </div>
 
-    <div class="diyas" id="diyas"><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button></div>
+    <div class="diya-stage" id="diya-stage"><svg class="rangoli" id="rangoli" aria-hidden="true"></svg><div class="diyas" id="diyas"><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button><button type="button" class="diya" aria-label="दीया"><svg viewBox="0 0 46 58" aria-hidden="true"><defs><radialGradient id="dg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".9"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient><linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0712C"/><stop offset="1" stop-color="#9C3D12"/></linearGradient><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E1"/><stop offset=".45" stop-color="#FFC107"/><stop offset="1" stop-color="#FF6F00"/></linearGradient></defs><circle class="glow" cx="23" cy="22" r="20" fill="url(#dg)"/><path class="flame" d="M23 8 C27 16 30 22 27 28 C25.5 31 20.5 31 19 28 C16 22 19 16 23 8Z" fill="url(#fl)"/><path d="M4 38 Q23 34 42 38 Q40 52 23 53 Q6 52 4 38Z" fill="url(#clay)"/><path d="M4 38 Q23 42 42 38" fill="none" stroke="#FFB74D" stroke-width="1.6"/><circle cx="14" cy="45" r="1.4" fill="#FFD180"/><circle cx="23" cy="47" r="1.4" fill="#FFD180"/><circle cx="32" cy="45" r="1.4" fill="#FFD180"/></svg></button></div></div>
     <p class="fest-note" id="fest-note"></p>
   </main>
 
   <footer>
+    <div class="fdiyas" id="fdiyas" aria-hidden="true"></div>
     <nav aria-label="Footer">
       <a href="privacy.html" data-t="privacyShort">Privacy</a>
       <a href="terms.html" data-t="terms">Terms</a>
@@ -482,6 +523,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       var wrapC = document.getElementById("ctry");
       if (!cc) { wrapC.hidden = true; return; }
       cc = String(cc).toUpperCase();
+      document.documentElement.classList.toggle("in-india", cc === "IN" && (tzIndia() || !!(loc && loc.manual)));
       var hi = document.documentElement.lang === "hi", name = cc;
       try { name = new Intl.DisplayNames([hi ? "hi" : "en"], { type: "region" }).of(cc) || cc; } catch (e) {}
       if (cc === "IN") name = hi ? "भारत" : "India";
@@ -756,6 +798,83 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     }
   }
   drawToran();
+
+  // ===== पूरी जगमग (6–10 नवंबर) =====
+  if (day >= 6) {
+    document.documentElement.classList.add("diwali-full");
+    // रंगोली
+    var rg = document.getElementById("rangoli");
+    function ring(g, n, rx, ry, petalR, color, rot, delay) {
+      var grp = el("g", { class: "rg", style: "animation-delay:" + delay + "s" });
+      for (var i = 0; i < n; i++) {
+        var a = (i / n) * Math.PI * 2 + (rot || 0);
+        var x = 165 + Math.cos(a) * rx, y = 60 + Math.sin(a) * ry;
+        grp.appendChild(el("ellipse", { cx: x, cy: y, rx: petalR, ry: petalR * .55, fill: color, transform: "rotate(" + (a * 180 / Math.PI) + " " + x + " " + y + ")" }));
+      }
+      g.appendChild(grp);
+    }
+    rg.setAttribute("viewBox", "0 0 330 120");
+    var g0 = el("g", {});
+    var base = el("g", { class: "rg", style: "animation-delay:0s" });
+    base.appendChild(el("ellipse", { cx: 165, cy: 60, rx: 160, ry: 56, fill: "#FCE4EC" }));
+    base.appendChild(el("ellipse", { cx: 165, cy: 60, rx: 160, ry: 56, fill: "none", stroke: "#D81B60", "stroke-width": 3 }));
+    g0.appendChild(base);
+    ring(g0, 22, 146, 50, 10, "#D81B60", 0, .15);
+    ring(g0, 18, 118, 40, 11, "#FF8F00", .17, .35);
+    ring(g0, 14, 90, 31, 11, "#FDD835", 0, .55);
+    ring(g0, 12, 63, 21.5, 10, "#43A047", .26, .75);
+    ring(g0, 8, 38, 13, 9, "#1E88E5", 0, .95);
+    var ctr = el("g", { class: "rg", style: "animation-delay:1.15s" });
+    ctr.appendChild(el("ellipse", { cx: 165, cy: 60, rx: 22, ry: 8, fill: "#8E24AA" }));
+    ctr.appendChild(el("ellipse", { cx: 165, cy: 60, rx: 9, ry: 3.4, fill: "#FFF59D" }));
+    for (var d2 = 0; d2 < 36; d2++) { var an2 = d2 / 36 * 6.283; ctr.appendChild(el("circle", { cx: 165 + Math.cos(an2) * 156, cy: 60 + Math.sin(an2) * 54, r: 1.6, fill: "#fff" })); }
+    g0.appendChild(ctr);
+    rg.appendChild(g0);
+
+    // फ़ुटर की रेखा पर एक-एक करके जलते दीये
+    var fd = document.getElementById("fdiyas");
+    var small = '<svg viewBox="0 0 22 28"><path class="ff" d="M11 3 C13 7 14.5 10 13 13 C12.2 14.6 9.8 14.6 9 13 C7.5 10 9 7 11 3Z" fill="#FFB300"/><path d="M1.5 17 Q11 15 20.5 17 Q19.5 25 11 25.5 Q2.5 25 1.5 17Z" fill="#C2511A"/><path d="M1.5 17 Q11 19 20.5 17" fill="none" stroke="#FFB74D" stroke-width="1"/></svg>';
+    function drawFoot() {
+      var n = Math.max(9, Math.min(32, Math.round(innerWidth / 46)));
+      fd.innerHTML = "";
+      for (var i = 0; i < n; i++) {
+        var sp = document.createElement("span"); sp.className = "fdiya"; sp.innerHTML = small;
+        var f = sp.querySelector(".ff"); f.style.animationDelay = (0.4 + i * 0.12) + "s, " + (-(i % 5) * .3) + "s";
+        fd.appendChild(sp);
+      }
+    }
+    drawFoot();
+
+    // गेंदे और गुलाब के फूलों के कोने
+    function rose(g, x, y, r, c, c2) {
+      g.appendChild(el("circle", { cx: x, cy: y, r: r, fill: c }));
+      g.appendChild(el("circle", { cx: x - r * .15, cy: y - r * .1, r: r * .66, fill: c2 }));
+      g.appendChild(el("path", { d: "M" + (x - r * .45) + " " + y + " q" + (r * .45) + " " + (-r * .55) + " " + (r * .9) + " 0 q" + (-r * .45) + " " + (r * .5) + " " + (-r * .9) + " 0", fill: "none", stroke: c, "stroke-width": 1.4 }));
+    }
+    function corner(svg) {
+      svg.setAttribute("viewBox", "0 0 150 110");
+      var g = el("g", {});
+      [[20, 96, -30], [58, 100, 10], [8, 62, -70], [96, 104, 40]].forEach(function (L) { g.appendChild(el("path", { d: "M0 0 C10 6 10 22 0 32 C-10 22 -10 6 0 0Z", fill: "#2E7D32", transform: "translate(" + L[0] + " " + L[1] + ") rotate(" + L[2] + ")" })); });
+      g.appendChild(flower(22, 92, 15, "#FF8F00", "#FFB300"));
+      g.appendChild(flower(56, 98, 12, "#FFC107", "#FFE082"));
+      g.appendChild(flower(12, 60, 11, "#FFC107", "#FFE082"));
+      rose(g, 42, 70, 11, "#C2185B", "#E91E63");
+      g.appendChild(flower(86, 102, 10, "#FF8F00", "#FFB300"));
+      rose(g, 112, 104, 8, "#D32F2F", "#EF5350");
+      rose(g, 30, 40, 7, "#D32F2F", "#EF5350");
+      svg.appendChild(g);
+    }
+    corner(document.getElementById("fl-bl")); corner(document.getElementById("fl-br"));
+
+    // किनारों की लटकती गेंदे की लड़ियाँ (बड़ी स्क्रीन पर)
+    function mala(svg) {
+      svg.setAttribute("viewBox", "0 0 34 340");
+      for (var i = 0; i < 18; i++) svg.appendChild(flower(17, 10 + i * 18, 8, i % 2 ? "#FFC107" : "#FF8F00", i % 2 ? "#FFE082" : "#FFB300"));
+      svg.appendChild(el("path", { d: "M0 0 C6 5 6 14 0 22 C-6 14 -6 5 0 0Z", fill: "#2E7D32", transform: "translate(17 330)" }));
+    }
+    mala(document.getElementById("sm-l")); mala(document.getElementById("sm-r"));
+    window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { drawToran(); drawFoot(); }, 150); });
+  }
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(drawToran, 150); });
 
   // आतिशबाज़ी
@@ -792,8 +911,45 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     if (!running) { running = true; requestAnimationFrame(frame); }
   }
   setTimeout(function () { show(day === 8 ? 5000 : 3000); }, 700);
+  // पटाखों की हल्की आवाज़: सिर्फ़ दीया छूने पर (कोई फ़ाइल नहीं, कोड से बनी आवाज़)
+  var AC = null;
+  function audio() {
+    try { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume(); return AC; } catch (e) { return null; }
+  }
+  function noiseBuf(ac, secs) {
+    var b = ac.createBuffer(1, Math.floor(ac.sampleRate * secs), ac.sampleRate), d = b.getChannelData(0);
+    for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    return b;
+  }
+  function boom(ac, t, vol) {
+    var src = ac.createBufferSource(); src.buffer = noiseBuf(ac, .9);
+    var lp = ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.setValueAtTime(900, t); lp.frequency.exponentialRampToValueAtTime(120, t + .7);
+    var g = ac.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.001, t + .85);
+    src.connect(lp); lp.connect(g); g.connect(ac.destination); src.start(t); src.stop(t + .9);
+    var o = ac.createOscillator(), og = ac.createGain(); o.type = "sine";
+    o.frequency.setValueAtTime(110, t); o.frequency.exponentialRampToValueAtTime(40, t + .4);
+    og.gain.setValueAtTime(vol * .9, t); og.gain.exponentialRampToValueAtTime(.001, t + .45);
+    o.connect(og); og.connect(ac.destination); o.start(t); o.stop(t + .5);
+  }
+  function crackle(ac, t, vol) {
+    var n = 14 + Math.floor(Math.random() * 10);
+    for (var i = 0; i < n; i++) {
+      var tt = t + .25 + Math.random() * .9;
+      var src = ac.createBufferSource(); src.buffer = noiseBuf(ac, .04);
+      var hp = ac.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 2500 + Math.random() * 3000;
+      var g = ac.createGain(); g.gain.setValueAtTime(vol * (.25 + Math.random() * .35), tt); g.gain.exponentialRampToValueAtTime(.001, tt + .035);
+      src.connect(hp); hp.connect(g); g.connect(ac.destination); src.start(tt); src.stop(tt + .05);
+    }
+  }
+  function cracker() {
+    if (reduce) return;
+    var ac = audio(); if (!ac) return;
+    var t = ac.currentTime + .02, vol = .32;
+    boom(ac, t, vol); crackle(ac, t, vol);
+    if (Math.random() < .6) { boom(ac, t + .55, vol * .7); crackle(ac, t + .55, vol * .7); }
+  }
   document.querySelectorAll(".diya").forEach(function (d) {
-    d.addEventListener("click", function () { var r = d.getBoundingClientRect(); show(1800, r.left + r.width / 2, Math.max(80, r.top - 140)); });
+    d.addEventListener("click", function () { var r = d.getBoundingClientRect(); show(1800, r.left + r.width / 2, Math.max(80, r.top - 140)); cracker(); });
   });
 })();
 </script>
