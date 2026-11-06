@@ -226,12 +226,42 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 #wa-field[hidden]{display:none}
 .hint{font-size:11px;color:var(--muted)}
 .id-note{margin-top:6px;font-size:12px;line-height:1.5;font-weight:700;color:#8A3B00;background:#FFF4E0;border:1px solid #F5C77E;border-radius:8px;padding:7px 10px}
+
+/* ===== छोटी दीपावली से: और ज़्यादा सजावट ===== */
+.diwali-full .diya-stage{flex-direction:column;align-items:center;margin-bottom:10px}
+.diwali-full .rangoli{position:static;transform:none;margin-top:4px}
+.diwali-full .diyas{padding-bottom:0}
+.fdiya{width:32px;height:41px}
+.diwali-full .fdiyas{top:-36px}
+.diwali-full footer{padding-top:30px}
+.diwali-full .fl-corner{width:210px;height:150px}
+.cascade,.hang{display:none}
+.diwali-full .side-mala{display:none !important}
+.diwali-full .cascade{display:block;position:absolute;top:0;width:150px;height:430px;z-index:3;pointer-events:none}
+.cascade.c-l{left:0}.cascade.c-r{right:0;transform:scaleX(-1)}
+.diwali-full .hang{display:block;position:absolute;top:0;z-index:4;pointer-events:none;transform-origin:50% 0;animation:swing 3.2s ease-in-out infinite}
+.hang svg{display:block;overflow:visible}
+@keyframes swing{0%,100%{transform:rotate(3.5deg)}50%{transform:rotate(-3.5deg)}}
+.hang .hf{transform-origin:center bottom;animation:flick 1.4s ease-in-out infinite}
+@media (max-width:640px){
+  .diwali-full .cascade{width:84px;height:260px}
+  .fdiya{width:26px;height:33px}.diwali-full .fdiyas{top:-30px}
+  .diwali-full .fl-corner{width:120px;height:86px}
+  .hang.h-hide-m{display:none !important}
+}
+@media (prefers-reduced-motion:reduce){.diwali-full .hang,.hang .hf{animation:none}}
+
+.diwali-full .diya-stage{flex-direction:column-reverse}
+.diwali-full .rangoli{margin-top:2px;margin-bottom:0}
+.diwali-full header{z-index:7 !important}
+.diwali-full .lang,.diwali-full .ctry{background:rgba(255,255,255,.92);border-radius:999px;padding:2px 12px;box-shadow:0 2px 10px rgba(43,43,43,.08);position:relative;z-index:7}
+@media (max-width:640px){.diwali-full .hang{display:none !important}.diwali-full .cascade{width:70px;height:240px}.diwali-full .lang{padding:2px 8px}.diwali-full .ctry{padding:2px 8px}}
 </style>
 </head>
 <body>
 <div class="page">
   <svg class="toran" id="toran" aria-hidden="true"></svg>
-  <svg class="fl-corner fl-bl" id="fl-bl" aria-hidden="true"></svg><svg class="fl-corner fl-br" id="fl-br" aria-hidden="true"></svg><svg class="side-mala sm-l" id="sm-l" aria-hidden="true"></svg><svg class="side-mala sm-r" id="sm-r" aria-hidden="true"></svg>
+  <svg class="fl-corner fl-bl" id="fl-bl" aria-hidden="true"></svg><svg class="fl-corner fl-br" id="fl-br" aria-hidden="true"></svg><svg class="side-mala sm-l" id="sm-l" aria-hidden="true"></svg><svg class="cascade c-l" id="cas-l" aria-hidden="true"></svg><svg class="cascade c-r" id="cas-r" aria-hidden="true"></svg><div id="hangs" aria-hidden="true"></div><svg class="side-mala sm-r" id="sm-r" aria-hidden="true"></svg>
   <canvas id="fireworks" aria-hidden="true"></canvas>
   <img class="flora flora-tr" src="flora-tr.webp" alt="" aria-hidden="true">
   <img class="flora flora-bl" src="flora-bl.webp" alt="" aria-hidden="true">
@@ -311,7 +341,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
             <small class="hint" data-t="firmHint">As per your GST / PAN / registration</small>
           </div>
           <div class="field">
-            <label for="rq-name" data-t="fName">Full name</label>
+            <label for="rq-name"><span class="pers-only" data-t="fName">Full name</span><span class="biz-only" data-t="fNameBiz" hidden>Contact person's full name</span></label>
             <input id="rq-name" name="name" type="text" autocomplete="name" required>
             <small class="hint" data-t="nameHint">As written on your ID (Aadhaar / PAN)</small>
           </div>
@@ -325,7 +355,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
             <p class="id-note biz-only" id="biz-note" data-t="idNoteBiz" hidden>ⓘ Please choose an email ID based on your firm's legal name, e.g. bharatenterprises or superstore</p>
           </div>
           <div class="doc-box biz-only" id="doc-box" hidden>
-            <b data-t="docTitle">Documents we need for a business ID</b>
+            <b data-t="docTitle">Any one of these documents is needed for a business ID</b>
             <ul>
               <li data-t="doc1">Firm's PAN or GST certificate</li>
               <li data-t="doc2">Proprietorship: the owner's PAN (or Aadhaar) is enough</li>
@@ -418,10 +448,10 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       back: "← साइन इन पर वापस", reqTitle: "खाता बनवाएँ", reqSub: "अपनी जानकारी भेजिए, हम आपका खाता बनाकर बताएँगे।",
       nameHint: "जैसा आपके पहचान-पत्र (आधार / पैन) में लिखा है", idNote: "ⓘ कृपया अपने सरकारी पहचान-पत्र में लिखे नाम के अनुसार ही ईमेल आईडी चुनें, जैसे amitsharma या sangitasingh", idNoteBiz: "ⓘ कृपया अपनी फ़र्म के क़ानूनी नाम के अनुसार ही ईमेल आईडी चुनें, जैसे bharatenterprises या superstore",
       typePersonal: "व्यक्तिगत", typeBusiness: "बिज़नेस / फ़र्म", fFirm: "फ़र्म / कंपनी का नाम", firmHint: "जैसा आपके GST / PAN / रजिस्ट्रेशन में लिखा है",
-      docTitle: "बिज़नेस आईडी के लिए ये दस्तावेज़ चाहिए", doc1: "फ़र्म का PAN या GST प्रमाणपत्र",
+      docTitle: "बिज़नेस आईडी के लिए इनमें से कोई एक दस्तावेज़ चाहिए", doc1: "फ़र्म का PAN या GST प्रमाणपत्र",
       doc2: "प्रोप्राइटरशिप में मालिक का PAN (या आधार) काफ़ी है", doc3: "उद्यम (Udyam) रजिस्ट्रेशन",
       docFoot: "अनुरोध भेजने के बाद कृपया इनमें से कोई एक दस्तावेज़ support@espilamail.com पर मेल कर दें। और कुछ चाहिए हुआ तो हम आपसे माँग लेंगे।",
-      badFirm: "कृपया फ़र्म / कंपनी का नाम लिखें।", fName: "पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
+      badFirm: "कृपया फ़र्म / कंपनी का नाम लिखें।", fName: "पूरा नाम", fNameBiz: "संपर्क व्यक्ति का पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
       fRef: "किसने भेजा", optional: "(वैकल्पिक)", send: "भेजें",
       waSame: "इसी नंबर पर मेरा WhatsApp है", fWa: "WhatsApp नंबर", waNote: "आपके खाते की जानकारी WhatsApp पर भेजी जाएगी।", badWa: "कृपया अपना WhatsApp नंबर लिखें।",
       agree: "भेजकर आप हमारी", terms: "शर्तें", and: "और", privacy: "गोपनीयता नीति",
@@ -843,7 +873,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
   window.__espilaFest = function () { return FEST[day]; };
   var hiLang = function () { return document.documentElement.lang === "hi"; };
   var note = document.getElementById("fest-note");
-  function setNote() { if (note) note.textContent = hiLang() ? "दीये को छूकर आतिशबाज़ी देखिए ✨" : "Tap a diya for fireworks ✨"; }
+  function setNote() { if (note) note.textContent = hiLang() ? "स्क्रीन पर कहीं भी छूकर आतिशबाज़ी देखिए ✨" : "Tap anywhere on the screen for fireworks ✨"; }
   setNote();
   document.querySelectorAll("[data-set-lang]").forEach(function (b) { b.addEventListener("click", function () { setTimeout(setNote, 0); }); });
   var gEl = document.getElementById("greet"); if (gEl) gEl.textContent = hiLang() ? FEST[day].hi : FEST[day].en;
@@ -957,6 +987,56 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       svg.appendChild(el("path", { d: "M0 0 C6 5 6 14 0 22 C-6 14 -6 5 0 0Z", fill: "#2E7D32", transform: "translate(17 330)" }));
     }
     mala(document.getElementById("sm-l")); mala(document.getElementById("sm-r"));
+    // ऊपर कोनों से झरती गेंदे की घनी लड़ियाँ
+    function cascade(svg) {
+      svg.setAttribute("viewBox", "0 0 150 430");
+      var strands = [[14, 420, 9.5], [42, 330, 9], [70, 250, 8.5], [98, 175, 8], [126, 110, 7.5]];
+      strands.forEach(function (st, k) {
+        var x = st[0], len = st[1], r = st[2], n = Math.floor(len / (r * 1.75));
+        for (var i = 0; i < n; i++) {
+          var c = (i + k) % 3 === 0 ? ["#FFC107", "#FFE082"] : ["#FF8F00", "#FFB300"];
+          if (i % 4 === 2) svg.appendChild(leaf(x + (i % 8 === 2 ? 8 : -8), 8 + i * r * 1.75, i % 8 === 2 ? -60 : 60));
+          svg.appendChild(flower(x + Math.sin(i * .8) * 1.5, 8 + i * r * 1.75, r, c[0], c[1]));
+        }
+        svg.appendChild(el("path", { d: "M0 0 C6 5 6 14 0 22 C-6 14 -6 5 0 0Z", fill: "#2E7D32", transform: "translate(" + x + " " + (8 + n * r * 1.75) + ")" }));
+      });
+      // ऊपर कोने में बड़ा गुच्छा
+      [[18, 14, 15], [46, 10, 13], [74, 8, 12], [30, 34, 12], [104, 8, 11]].forEach(function (f, i) { svg.appendChild(flower(f[0], f[1], f[2], i % 2 ? "#FFC107" : "#FF8F00", i % 2 ? "#FFE082" : "#FFB300")); });
+    }
+    cascade(document.getElementById("cas-l")); cascade(document.getElementById("cas-r"));
+
+    // तोरण से लटकते पीतल के दीये और घंटियाँ (झूलते हुए)
+    var BR = '<defs><linearGradient id="brass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset=".5" stop-color="#D4A017"/><stop offset="1" stop-color="#8A6200"/></linearGradient><radialGradient id="hglow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFD54F" stop-opacity=".85"/><stop offset="1" stop-color="#FFB300" stop-opacity="0"/></radialGradient></defs>';
+    function chain(len) { var o = ""; for (var y = 0; y < len; y += 7) o += '<ellipse cx="20" cy="' + (y + 3.5) + '" rx="2.2" ry="3.4" fill="none" stroke="#B8860B" stroke-width="1.3"/>'; return o; }
+    function lampSVG(len) {
+      return '<svg width="40" height="' + (len + 70) + '" viewBox="0 0 40 ' + (len + 70) + '">' + BR + chain(len) +
+        '<g transform="translate(0 ' + len + ')"><path d="M8 4 L20 0 L32 4" fill="none" stroke="#B8860B" stroke-width="1.4"/>' +
+        '<circle cx="20" cy="22" r="18" fill="url(#hglow)"/>' +
+        '<path class="hf" d="M20 8 C23 14 25 19 22.5 23 C21.5 24.5 18.5 24.5 17.5 23 C15 19 17 14 20 8Z" fill="#FFB300"/>' +
+        '<path d="M5 24 Q20 20 35 24 Q34 36 20 38 Q6 36 5 24Z" fill="url(#brass)"/>' +
+        '<path d="M14 38 L20 52 L26 38" fill="url(#brass)"/><circle cx="20" cy="56" r="3" fill="#D4A017"/></g></svg>';
+    }
+    function bellSVG(len) {
+      return '<svg width="40" height="' + (len + 52) + '" viewBox="0 0 40 ' + (len + 52) + '">' + BR + chain(len) +
+        '<g transform="translate(0 ' + len + ')"><circle cx="20" cy="4" r="3.5" fill="none" stroke="#B8860B" stroke-width="1.6"/>' +
+        '<path d="M20 7 C10 9 9 20 8 30 L5 36 L35 36 L32 30 C31 20 30 9 20 7Z" fill="url(#brass)"/>' +
+        '<path d="M5 36 L35 36" stroke="#8A6200" stroke-width="2"/><circle cx="20" cy="41" r="3.6" fill="#B8860B"/>' +
+        '<path d="M14 15 C13 20 13 25 12.5 30" stroke="#FFF3C4" stroke-width="1.6" fill="none" opacity=".7"/></g></svg>';
+    }
+    function drawHangs() {
+      var box = document.getElementById("hangs"); box.innerHTML = "";
+      var W = innerWidth, mob = W < 640;
+      var spots = mob ? [[.06, 70, "l"], [.94, 70, "l"]] : [[.13, 110, "l"], [.25, 70, "b"], [.37, 120, "l"], [.63, 120, "l"], [.75, 70, "b"], [.87, 110, "l"]];
+      spots.forEach(function (sp, i) {
+        var d = document.createElement("div"); d.className = "hang";
+        d.style.left = (sp[0] * W - 20) + "px"; d.style.animationDelay = (-i * .7) + "s";
+        d.innerHTML = sp[2] === "l" ? lampSVG(sp[1]) : bellSVG(sp[1]);
+        box.appendChild(d);
+      });
+    }
+    drawHangs();
+    window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(drawHangs, 160); });
+
     window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { drawToran(); drawFoot(); }, 150); });
   }
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(drawToran, 150); });
@@ -995,6 +1075,11 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     if (!running) { running = true; requestAnimationFrame(frame); }
   }
   setTimeout(function () { show(day === 8 ? 5000 : 3000); }, 700);
+  // स्क्रीन पर कहीं भी छूने पर आतिशबाज़ी (बटन, कड़ियाँ और खाने पहले की तरह काम करें)
+  document.addEventListener("click", function (e) {
+    if (e.target.closest && e.target.closest("a,button,input,select,textarea,label,form,.lang,.more,.ctry,.diya")) return;
+    show(1600, e.clientX, Math.max(70, e.clientY - 60));
+  });
   // पटाखों की हल्की आवाज़: सिर्फ़ दीया छूने पर (कोई फ़ाइल नहीं, कोड से बनी आवाज़)
   var AC = null;
   function audio() {
