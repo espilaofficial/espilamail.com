@@ -116,6 +116,14 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--r
 .addr input:focus{box-shadow:none}
 .addr:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
 .addr span{display:flex;align-items:center;padding:0 10px;color:var(--muted);font-size:12px;white-space:nowrap;border-left:1px solid var(--card-line);background:#FAF9FC}
+[hidden].biz-only,[hidden].pers-only{display:none}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{min-height:36px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--label);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.doc-box{background:#FFF8E1;border:1px solid #F0D58A;border-radius:8px;padding:9px 12px;font-size:12px;line-height:1.55;color:#5A4300}
+.doc-box b{display:block;color:#2A0C55;margin-bottom:3px}
+.doc-box ul{margin:0 0 6px 16px;padding:0}
+.doc-box p{margin:0;font-weight:600}
 .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .btn{display:flex;align-items:center;justify-content:center;min-height:30px;border-radius:8px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
 .btn:hover{text-decoration:none}
@@ -293,6 +301,15 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
           <p class="sub" data-t="reqSub">Share your details, and we'll create your account and let you know.</p>
         </div>
         <form id="invite-form" novalidate>
+          <div class="seg" role="group" aria-label="Account type">
+            <button type="button" id="type-personal" aria-pressed="true" data-t="typePersonal">Personal</button>
+            <button type="button" id="type-business" aria-pressed="false" data-t="typeBusiness">Business / Firm</button>
+          </div>
+          <div class="field biz-only" id="firm-field" hidden>
+            <label for="rq-firm" data-t="fFirm">Firm / company name</label>
+            <input id="rq-firm" name="firm" type="text" autocomplete="organization">
+            <small class="hint" data-t="firmHint">As per your GST / PAN / registration</small>
+          </div>
           <div class="field">
             <label for="rq-name" data-t="fName">Full name</label>
             <input id="rq-name" name="name" type="text" autocomplete="name" required>
@@ -304,8 +321,17 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
               <input id="rq-id" name="preferred" type="text" placeholder="yourname" autocapitalize="none" spellcheck="false" required>
               <span>@espilamail.com</span>
             </div>
-            <p class="id-note" data-t="idNote">ⓘ Please choose an email ID based on your name as per your government ID, e.g. amitsharma or sangitasingh</p>
-            <small class="hint" data-t="bizNote">Only personal names are allowed right now. Business or company names are not supported yet.</small>
+            <p class="id-note pers-only" data-t="idNote">ⓘ Please choose an email ID based on your name as per your government ID, e.g. amitsharma or sangitasingh</p>
+            <p class="id-note biz-only" id="biz-note" data-t="idNoteBiz" hidden>ⓘ Please choose an email ID based on your firm's legal name, e.g. bharatenterprises or superstore</p>
+          </div>
+          <div class="doc-box biz-only" id="doc-box" hidden>
+            <b data-t="docTitle">Documents we need for a business ID</b>
+            <ul>
+              <li data-t="doc1">Firm's PAN or GST certificate</li>
+              <li data-t="doc2">Proprietorship: the owner's PAN (or Aadhaar) is enough</li>
+              <li data-t="doc3">Udyam registration, if you have it</li>
+            </ul>
+            <p data-t="docFoot">After sending this request, please email these to support@espilamail.com. We will also write to you if anything is missing.</p>
           </div>
           <div class="two">
             <div class="field">
@@ -390,7 +416,12 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       signinBtn: "प्रवेश करें",
       forgot: "पासवर्ड भूल गए?", familyLink: "खाता बनवाएँ",
       back: "← साइन इन पर वापस", reqTitle: "खाता बनवाएँ", reqSub: "अपनी जानकारी भेजिए, हम आपका खाता बनाकर बताएँगे।",
-      nameHint: "जैसा आपके पहचान-पत्र (आधार / पैन) में लिखा है", idNote: "ⓘ कृपया अपने सरकारी पहचान-पत्र में लिखे नाम के अनुसार ही ईमेल आईडी चुनें, जैसे amitsharma या sangitasingh", bizNote: "अभी सिर्फ़ व्यक्तिगत नाम की अनुमति है। फ़र्म या कंपनी के नाम से ईमेल आईडी अभी उपलब्ध नहीं है।", fName: "पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
+      nameHint: "जैसा आपके पहचान-पत्र (आधार / पैन) में लिखा है", idNote: "ⓘ कृपया अपने सरकारी पहचान-पत्र में लिखे नाम के अनुसार ही ईमेल आईडी चुनें, जैसे amitsharma या sangitasingh", idNoteBiz: "ⓘ कृपया अपनी फ़र्म के क़ानूनी नाम के अनुसार ही ईमेल आईडी चुनें, जैसे bharatenterprises या superstore",
+      typePersonal: "व्यक्तिगत", typeBusiness: "बिज़नेस / फ़र्म", fFirm: "फ़र्म / कंपनी का नाम", firmHint: "जैसा आपके GST / PAN / रजिस्ट्रेशन में लिखा है",
+      docTitle: "बिज़नेस आईडी के लिए ये दस्तावेज़ चाहिए", doc1: "फ़र्म का PAN या GST प्रमाणपत्र",
+      doc2: "प्रोप्राइटरशिप में मालिक का PAN (या आधार) काफ़ी है", doc3: "उद्यम (Udyam) रजिस्ट्रेशन, अगर हो",
+      docFoot: "अनुरोध भेजने के बाद कृपया ये दस्तावेज़ support@espilamail.com पर मेल कर दें। कुछ कम हुआ तो हम भी आपको लिखेंगे।",
+      badFirm: "कृपया फ़र्म / कंपनी का नाम लिखें।", fName: "पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
       fRef: "किसने भेजा", optional: "(वैकल्पिक)", send: "भेजें",
       waSame: "इसी नंबर पर मेरा WhatsApp है", fWa: "WhatsApp नंबर", waNote: "आपके खाते की जानकारी WhatsApp पर भेजी जाएगी।", badWa: "कृपया अपना WhatsApp नंबर लिखें।",
       agree: "भेजकर आप हमारी", terms: "शर्तें", and: "और", privacy: "गोपनीयता नीति",
@@ -401,18 +432,19 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       popHow: "साइन इन के बाद: सेटिंग्स → सामान्य → भाषा।",
       cityOk: "ठीक", cityAuto: "अपने-आप",
       missing: "कृपया सभी ज़रूरी खाने भरें।", badEmail: "कृपया सही ईमेल पता लिखें।",
-      badAddr: "पसंदीदा पते में सिर्फ़ अंग्रेज़ी अक्षर, अंक, बिंदु (.) या हाइफ़न (-) हों।",
+      badAddr: "पसंदीदा पते में सिर्फ़ अंग्रेज़ी अक्षर और अंक हों।",
       opened: "आपका ईमेल ऐप खुल गया है, वहाँ से मेल भेज दीजिए।",
       sent: "धन्यवाद! हम जल्द ही आपसे संपर्क करेंगे।",
       failed: "जानकारी नहीं भेजी जा सकी। कृपया invite@espilamail.com पर लिखें।"
     },
     en: {
       missing: "Please fill in all required fields.", badEmail: "Please enter a valid email address.",
-      badAddr: "The preferred address may only use English letters, numbers, dot (.) or hyphen (-).",
+      badAddr: "The preferred address may only use English letters and numbers.",
       opened: "Your email app has opened — please send the message from there.",
       sent: "Thank you! We'll be in touch soon.",
       failed: "Could not send your details. Please write to invite@espilamail.com.",
-      badWa: "Please enter your WhatsApp number."
+      badWa: "Please enter your WhatsApp number.",
+      badFirm: "Please enter your firm / company name."
     }
   };
   var original = {};
@@ -728,6 +760,22 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     if (!waSame.checked) { waIn.value = ""; waIn.readOnly = false; waIn.focus(); } else syncWa();
   });
   mobIn.addEventListener("input", function () { if (waSame.checked) syncWa(); });
+  var isBiz = false;
+  var tP = document.getElementById("type-personal"), tB = document.getElementById("type-business");
+  function setType(biz) {
+    isBiz = biz;
+    tP.setAttribute("aria-pressed", String(!biz)); tB.setAttribute("aria-pressed", String(biz));
+    document.querySelectorAll(".biz-only").forEach(function (e) { e.hidden = !biz; });
+    document.querySelectorAll(".pers-only").forEach(function (e) { e.hidden = biz; });
+    document.getElementById("rq-id").placeholder = biz ? "yourfirmname" : "yourname";
+  }
+  var idIn = document.getElementById("rq-id");
+  idIn.addEventListener("input", function () {
+    var c = idIn.value.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (c !== idIn.value) idIn.value = c;
+  });
+  tP.addEventListener("click", function () { setType(false); });
+  tB.addEventListener("click", function () { setType(true); });
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
     var d = {
@@ -735,15 +783,20 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       preferred: form.preferred.value.trim().toLowerCase(),
       email: form.email.value.trim(),
       mobile: form.mobile.value.trim(),
-      referred_by: form.referred_by.value.trim()
+      referred_by: form.referred_by.value.trim(),
+      type: isBiz ? "Business" : "Personal",
+      firm: isBiz ? form.firm.value.trim() : ""
     };
     d.whatsapp = waIn.value.trim();
     if (!d.name || !d.preferred || !d.email || !d.mobile) return show(msg("missing"), true);
+    if (isBiz && !d.firm) return show(msg("badFirm"), true);
     if (!d.whatsapp) return show(msg("badWa"), true);
-    if (!/^[a-z0-9]([a-z0-9.-]{0,38}[a-z0-9])?$/.test(d.preferred)) return show(msg("badAddr"), true);
+    if (!/^[a-z0-9]{1,40}$/.test(d.preferred)) return show(msg("badAddr"), true);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return show(msg("badEmail"), true);
 
     var body =
+      "Type: " + d.type + "\n" +
+      (isBiz ? "Firm name: " + d.firm + "\n" : "") +
       "Name: " + d.name + "\n" +
       "Preferred address: " + d.preferred + "@espilamail.com\n" +
       "Current email: " + d.email + "\n" +
@@ -753,14 +806,14 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 
     if (!FORM_ENDPOINT) {
       window.location.href = "mailto:" + INVITE_TO +
-        "?subject=" + encodeURIComponent("Espila family: " + d.preferred + "@espilamail.com") +
+        "?subject=" + encodeURIComponent("Espila family" + (isBiz ? " (Business)" : "") + ": " + d.preferred + "@espilamail.com") +
         "&body=" + encodeURIComponent(body);
       return show(msg("opened"), false);
     }
     fetch(FORM_ENDPOINT, {
       method: "POST",
       headers: { "Accept": "application/json", "Content-Type": "application/json" },
-      body: JSON.stringify(Object.assign({ _subject: "Invitation request: " + d.preferred }, d))
+      body: JSON.stringify(Object.assign({ _subject: (isBiz ? "Business invitation request: " : "Invitation request: ") + d.preferred }, d))
     }).then(function (r) {
       if (!r.ok) throw new Error(r.status);
       form.reset(); waIn.readOnly = false;
