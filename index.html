@@ -327,6 +327,12 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
   .diwali-full .fdiyas{left:8px;right:8px;justify-content:space-evenly}
   .diwali-full .fdiya{width:32px;height:28px}
 }
+
+/* सुधार 3: दीयों की लाइन के लिए पक्की जगह, नोट और रेखा के बीच */
+.diwali-full footer{margin-top:92px}
+.diwali-full .fdiyas{top:-68px}
+.diwali-full .fest-note{margin-bottom:6px}
+@media (max-width:640px){.diwali-full footer{margin-top:66px}.diwali-full .fdiyas{top:-48px}}
 </style>
 </head>
 <body>
@@ -1036,8 +1042,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     function placeFoot() {
       var nt = document.getElementById("fest-note"), ft = fd.parentNode;
       if (!nt || !ft) return;
-      var gap = ft.getBoundingClientRect().top - nt.getBoundingClientRect().bottom, h = fd.offsetHeight || 36;
-      fd.style.top = Math.round(-(Math.max(gap, h + 8) / 2) - h / 2) + "px";
+      fd.style.top = ""; /* जगह अब CSS से तय होती है */
     }
     drawFoot(); placeFoot();
     window.addEventListener("load", placeFoot);
