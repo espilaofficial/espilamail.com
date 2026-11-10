@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Espila Mail – Today, Tomorrow &amp; Beyond...</title>
-<meta name="description" content="Espila Mail – a calm, private, precious and premium email service. Unique, by invitation only, and complimentary for those invited.">
+<meta name="description" content="Espila Mail – a calm, private, invitation-only email service.">
 <meta name="theme-color" content="#7B2CF5">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -401,7 +401,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
         </div>
       </section>
 
-      <section class="card" id="request" data-nosnippet aria-labelledby="request-title" hidden>
+      <section class="card" id="request" aria-labelledby="request-title" hidden>
         <button type="button" class="back" id="back-btn" data-t="back">← Back to sign in</button>
         <div>
           <h2 id="request-title" data-t="reqTitle">Get your account</h2>
@@ -474,7 +474,6 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
   <footer>
     <div class="fdiyas" id="fdiyas" aria-hidden="true"></div>
     <nav aria-label="Footer">
-      <a href="about.html" data-t="about">About</a>
       <a href="privacy.html" data-t="privacyShort">Privacy</a>
       <a href="terms.html" data-t="terms">Terms</a>
       <a href="mailto:support@espilamail.com" data-t="help">Help</a>
@@ -533,7 +532,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       fRef: "किसने भेजा", optional: "(वैकल्पिक)", send: "भेजें",
       waSame: "इसी नंबर पर मेरा WhatsApp है", fWa: "WhatsApp नंबर", waNote: "आपके खाते की जानकारी WhatsApp पर भेजी जाएगी।", badWa: "कृपया अपना WhatsApp नंबर लिखें।",
       agree: "भेजकर आप हमारी", terms: "शर्तें", and: "और", privacy: "गोपनीयता नीति",
-      about: "परिचय", privacyShort: "गोपनीयता", help: "मदद", grievance: "शिकायत", suggestions: "सुझाव",
+      privacyShort: "गोपनीयता", help: "मदद", grievance: "शिकायत", suggestions: "सुझाव",
       rights: "सर्वाधिकार सुरक्षित।",
       moreLang: "70+ भाषाएँ", popTitle: "आपका मेलबॉक्स आपकी भाषा में",
       popIn: "8 भारतीय भाषाएँ + English", popFo: "65 से ज़्यादा विदेशी भाषाएँ",
@@ -623,7 +622,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 
   // मौसम और हवा (AQI): IP से शहर → न मिले तो समय क्षेत्र → न मिले तो दिल्ली। व्यक्ति खुद शहर चुन सकता है।
   (function () {
-    var KEY = "espila-wx", DELHI = { en: "Delhi", hi: "दिल्ली", lat: 28.6139, lon: 77.2090, cc: "IN" };
+    var KEY = "espila-wx", DELHI = { en: "Delhi", hi: "दिल्ली", lat: 28.6139, lon: 77.2090, cc: "IN", st: "Delhi" };
     var box = document.getElementById("wx"); if (!box) return;
     var state = null, wrap = document.getElementById("wxwrap");
     function sync() { var f = document.getElementById("cityform"); wrap.hidden = box.hidden && (!f || f.hidden); }
@@ -707,6 +706,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
         for (var i = 0; i < CATS.length; i++) if (a <= CATS[i][0]) { c = CATS[i]; break; }
         aq.textContent = (hi ? "हवा " : "AQI ") + a + " · " + (hi ? c[1] : c[2]);
         aq.style.color = c[3]; aq.style.background = c[4]; aq.style.borderColor = c[3] + "33";
+        aq.title = state.aqiSrc || "";
         aq.hidden = false;
       } else aq.hidden = true;
       var loc = state.loc || DELHI;
@@ -725,17 +725,17 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       if (!tz || /^Asia\/(Kolkata|Calcutta)$/.test(tz)) return Promise.resolve(DELHI);
       var name = tz.split("/").pop().replace(/_/g, " ");
       return getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(name))
-        .then(function (d) { var r = d.results && d.results[0]; if (!r) return DELHI; return { en: r.name, lat: r.latitude, lon: r.longitude, cc: r.country_code }; })
+        .then(function (d) { var r = d.results && d.results[0]; if (!r) return DELHI; return { en: r.name, lat: r.latitude, lon: r.longitude, cc: r.country_code, st: r.admin1 || "" }; })
         .catch(function () { return DELHI; });
     }
     function fromIP() {
       return getJSON("https://get.geojs.io/v1/ip/geo.json").then(function (d) {
         if (!d.city || !d.latitude) throw new Error("no city");
-        return { en: d.city, lat: +d.latitude, lon: +d.longitude, cc: d.country_code };
+        return { en: d.city, lat: +d.latitude, lon: +d.longitude, cc: d.country_code, st: d.region || "" };
       }).catch(function () {
         return getJSON("https://ipwho.is/").then(function (d) {
           if (!d.success || !d.city) throw new Error("no city");
-          return { en: d.city, lat: d.latitude, lon: d.longitude, cc: d.country_code };
+          return { en: d.city, lat: d.latitude, lon: d.longitude, cc: d.country_code, st: d.region || "" };
         });
       }).catch(fromTimezone);
     }
@@ -746,21 +746,68 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
         var o = load() || {}; o.loc = loc; o.locTs = Date.now(); save(o); return loc;
       });
     }
+    // CPCB का असली AQI (data.gov.in) — सबसे नज़दीकी सरकारी स्टेशन से। न मिले तो Open-Meteo का अनुमान।
+    var DATAGOV_KEY = "579b464db66ec23bdd000001657eb314a7de47ab7076fc69b8d5f03e";
+    function stateOf(loc) {
+      if (loc.st != null && loc.st !== "") return Promise.resolve(loc.st);
+      return getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(loc.en))
+        .then(function (d) { var r = d.results && d.results[0]; loc.st = (r && r.admin1) || ""; return loc.st; })
+        .catch(function () { return ""; });
+    }
+    function km(a, b, c, d) {
+      var R = 6371, x = (c - a) * Math.PI / 180, y = (d - b) * Math.PI / 180;
+      var h = Math.sin(x / 2) * Math.sin(x / 2) + Math.cos(a * Math.PI / 180) * Math.cos(c * Math.PI / 180) * Math.sin(y / 2) * Math.sin(y / 2);
+      return 2 * R * Math.asin(Math.sqrt(h));
+    }
+    function cpcb(loc) {
+      if (!/^[0-9a-f]{20,}$/i.test(DATAGOV_KEY) || String(loc.cc || "").toUpperCase() !== "IN") return Promise.resolve(null);
+      return stateOf(loc).then(function (st) {
+        if (!st) return null;
+        st = /delhi/i.test(st) ? "Delhi" : st.replace(/\s+/g, "_");
+        return getJSON("https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69?api-key=" + DATAGOV_KEY +
+          "&format=json&limit=1000&filters[state]=" + encodeURIComponent(st));
+      }).then(function (d) {
+        if (!d || !d.records || !d.records.length) return null;
+        var S = {};
+        d.records.forEach(function (r) {
+          var v = parseFloat(r.avg_value != null ? r.avg_value : r.pollutant_avg);
+          var k = r.station; if (!k) return;
+          var s = S[k] || (S[k] = { name: k.trim(), lat: +r.latitude, lon: +r.longitude, t: r.last_update, aqi: 0, n: 0, pm: false });
+          if (isNaN(v)) return;
+          s.n++; if (v > s.aqi) s.aqi = v;
+          if (/^PM/.test(r.pollutant_id)) s.pm = true;
+        });
+        var best = null;
+        Object.keys(S).forEach(function (k) {
+          var s = S[k];
+          if (!s.pm || s.n < 3 || isNaN(s.lat)) return;          // CPCB का नियम: कम से कम 3 प्रदूषक, जिनमें एक PM
+          var m = /(\d+)-(\d+)-(\d+) (\d+):(\d+)/.exec(s.t || "");
+          if (m) {
+            var ts = Date.UTC(+m[3], +m[2] - 1, +m[1], +m[4], +m[5]) - 5.5 * 3600e3;
+            if (Date.now() - ts > 8 * 3600e3) return;           // 8 घंटे से पुराना डेटा नहीं
+          }
+          s.km = km(loc.lat, loc.lon, s.lat, s.lon);
+          if (s.km <= 30 && (!best || s.km < best.km)) best = s;
+        });
+        return best ? { aqi: best.aqi, src: best.name.replace(/\s*-\s*(HSPCB|IITM|CPCB|DPCC|UPPCB)\s*$/i, "") + " · " + (best.t || "").slice(11, 16) } : null;
+      }).catch(function () { return null; });
+    }
     function weather(loc) {
       var q = "latitude=" + loc.lat + "&longitude=" + loc.lon;
       var w = getJSON("https://api.open-meteo.com/v1/forecast?" + q + "&current=temperature_2m,weather_code,is_day");
       var a = getJSON("https://air-quality-api.open-meteo.com/v1/air-quality?" + q + "&hourly=pm10,pm2_5&past_days=1&forecast_days=1&timezone=GMT")
         .catch(function () { return null; });
-      return Promise.all([w, a]).then(function (r) {
-        var cur = r[0].current || {}, aqi = null;
-        if (r[1] && r[1].hourly) {
+      return Promise.all([w, a, cpcb(loc)]).then(function (r) {
+        var cur = r[0].current || {}, aqi = null, src = "";
+        if (r[2]) { aqi = r[2].aqi; src = "CPCB: " + r[2].src; }
+        else if (r[1] && r[1].hourly) {
           var t = r[1].hourly.time.map(function (x) { return x + "Z"; });
           var p25 = sub(avg24(t, r[1].hourly.pm2_5), "pm25"), p10 = sub(avg24(t, r[1].hourly.pm10), "pm10");
-          if (p25 != null || p10 != null) aqi = Math.max(p25 || 0, p10 || 0);
+          if (p25 != null || p10 != null) { aqi = Math.max(p25 || 0, p10 || 0); src = "Open-Meteo (अनुमान)"; }
         }
         var o = load() || {};
         o.loc = loc; o.temp = cur.temperature_2m; o.code = cur.weather_code; o.day = cur.is_day === 1;
-        o.aqi = aqi; o.ts = Date.now(); save(o); return o;
+        o.aqi = aqi; o.aqiSrc = src; o.ts = Date.now(); save(o); return o;
       });
     }
     function refresh(force) {
@@ -768,7 +815,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     }
     var cached = load();
     if (cached && cached.temp != null) { state = cached; render(); } else country();
-    if (!cached || !cached.ts || Date.now() - cached.ts > 30 * 60e3 || !cached.loc) refresh(false);
+    if (!cached || !cached.ts || Date.now() - cached.ts > 30 * 60e3 || !cached.loc || cached.aqiSrc == null) refresh(false);
     setInterval(function () { if (!document.hidden) refresh(false); }, 30 * 60e3);
 
     // शहर बदलना
@@ -786,7 +833,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       getJSON("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name=" + encodeURIComponent(name)).then(function (d) {
         var r = d.results && d.results[0];
         if (!r) { msg.textContent = hi ? "यह शहर नहीं मिला, अंग्रेज़ी में लिखकर देखें।" : "City not found. Try another spelling."; return; }
-        var loc = { en: r.name, lat: r.latitude, lon: r.longitude, cc: r.country_code, manual: true };
+        var loc = { en: r.name, lat: r.latitude, lon: r.longitude, cc: r.country_code, st: r.admin1 || "", manual: true };
         return hindiName(loc).then(function (l) {
           var o = load() || {}; o.loc = l; o.locTs = Date.now(); save(o);
           form.hidden = true; btn.setAttribute("aria-expanded", "false");
