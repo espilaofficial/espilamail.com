@@ -120,7 +120,9 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--r
 .addr:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
 .addr span{display:flex;align-items:center;padding:0 10px;color:var(--muted);font-size:12px;white-space:nowrap;border-left:1px solid var(--card-line);background:#FAF9FC}
 [hidden].biz-only,[hidden].pers-only{display:none}
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+[data-m][hidden]{display:none !important}
+select.inp{width:100%;min-height:38px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:#fff;font:inherit;font-size:14px;color:var(--text)}
 .seg button{min-height:36px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--label);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .doc-box{background:#FFF8E1;border:1px solid #F0D58A;border-radius:8px;padding:9px 12px;font-size:12px;line-height:1.55;color:#5A4300}
@@ -338,6 +340,8 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 @media (max-width:640px){.diwali-full footer{margin-top:66px}.diwali-full .fdiyas{top:-48px}}
 
 /* नाम जाँचने वाला डिब्बा */
+.hint.bad{color:#C62828;font-weight:700}
+.hint[hidden]{display:none}
 .cm-back{position:fixed;inset:0;z-index:50;background:rgba(30,16,60,.45);display:flex;align-items:center;justify-content:center;padding:16px;animation:cmf .18s ease-out}
 .cm-back[hidden]{display:none}
 @keyframes cmf{from{opacity:0}to{opacity:1}}
@@ -358,17 +362,30 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 .cm .acts .fix{background:#fff;border:1px solid var(--accent);color:var(--accent)}
 .cm .acts .go{background:var(--accent);border:0;color:#fff}
 .cm .acts .go:disabled{background:#CFC3E8;cursor:not-allowed}
+
+/* चेतावनियाँ हमेशा लाल, "भेजिए" हरा */
+.id-note{color:#B71C1C;background:#FDECEC;border-color:#F3B4B4}
+.cm h3{color:#C62828}
+.cm .who{background:#FDF1F1;border-color:#F3C4C4}
+.cm .who b:last-child{color:#B71C1C}
+.cm label.ok input{accent-color:#C62828}
+.cm .acts .fix{border-color:#9A9A9A;color:#444}
+.cm .acts .go{background:#2E7D32}
+.cm .acts .go:disabled{background:#C8DCC9}
+.doc-send{margin:8px 0 0 !important;font-size:13px;font-weight:800;color:#2A0C55}
+.doc-send a{color:var(--accent)}
+.doc-btn{display:inline-flex;align-items:center;gap:6px;margin-top:8px;min-height:36px;padding:0 14px;border-radius:999px;background:#2E7D32;color:#fff !important;font-size:13px;font-weight:800;text-decoration:none}
 </style>
 </head>
 <body>
 <div class="cm-back" id="cm" hidden>
   <div class="cm" role="dialog" aria-modal="true" aria-labelledby="cm-title">
     <h3 id="cm-title" data-t="cmTitle">Please check once again</h3>
-    <p><span class="pers-only" data-t="cmAsk">Write your name exactly as it appears on your government ID (Aadhaar, PAN, passport etc.).</span><span class="biz-only" data-t="cmAskBiz" hidden>Write your firm's name exactly as it appears on your business documents (GST, PAN, Udyam etc.).</span></p>
-    <div class="who"><small><span class="pers-only" data-t="cmName">Your name</span><span class="biz-only" data-t="cmNameBiz" hidden>Firm name</span></small><b id="cm-name"></b><small data-t="cmAddr">Your email address</small><b id="cm-addr"></b></div>
+    <p><span data-m="p" data-t="cmAsk">Write your name exactly as it appears on your government ID (Aadhaar, PAN, passport etc.).</span><span data-m="c" data-t="cmAskKid" hidden>Write the child's name exactly as it appears on the birth certificate / Baal Aadhaar.</span><span data-m="b" data-t="cmAskBiz" hidden>Write your firm's name exactly as it appears on your business documents (GST, PAN, Udyam etc.).</span></p>
+    <div class="who"><small><span data-m="p" data-t="cmName">Your name</span><span data-m="c" data-t="cmNameKid" hidden>Child's name</span><span data-m="b" data-t="cmNameBiz" hidden>Firm name</span></small><b id="cm-name"></b><small><span data-m="pb" data-t="cmAddr">Your email address</span><span data-m="c" data-t="cmAddrKid" hidden>Child's email address</span></small><b id="cm-addr"></b></div>
     <p class="mis" id="cm-mis" hidden></p>
     <p class="warn" data-t="cmWarn">⚠ Once created, your email address cannot be changed. To change it, the old account would have to be closed, and your old mail and contacts may be lost.</p>
-    <label class="ok"><input type="checkbox" id="cm-ok"> <span><span class="pers-only" data-t="cmOk">I have checked the name against my government ID</span><span class="biz-only" data-t="cmOkBiz" hidden>I have checked the name against my business documents</span></span></label>
+    <label class="ok"><input type="checkbox" id="cm-ok"> <span><span data-m="p" data-t="cmOk">I have checked the name against my government ID</span><span data-m="c" data-t="cmOkKid" hidden>I have checked the name against the child's document, and I am the child's parent / legal guardian</span><span data-m="b" data-t="cmOkBiz" hidden>I have checked the name against my business documents</span></span></label>
     <div class="acts"><button type="button" class="fix" id="cm-fix" data-t="cmFix">Go back</button><button type="button" class="go" id="cm-go" disabled data-t="cmGo">Send</button></div>
   </div>
 </div>
@@ -448,17 +465,41 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
         <form id="invite-form" novalidate>
           <div class="seg" role="group" aria-label="Account type">
             <button type="button" id="type-personal" aria-pressed="true" data-t="typePersonal">Personal</button>
+            <button type="button" id="type-child" aria-pressed="false" data-t="typeChild">For my child</button>
             <button type="button" id="type-business" aria-pressed="false" data-t="typeBusiness">Business / Firm</button>
           </div>
-          <div class="field biz-only" id="firm-field" hidden>
+          <div class="field" data-m="b" id="firm-field" hidden>
             <label for="rq-firm" data-t="fFirm">Firm / company name</label>
-            <input id="rq-firm" name="firm" type="text" autocomplete="organization">
-            <small class="hint" data-t="firmHint">As per your GST / PAN / registration</small>
+            <input id="rq-firm" name="firm" type="text" autocomplete="organization" lang="en">
+            <small class="hint" data-t="firmHint">In English, exactly as on your GST / PAN / registration</small>
+            <small class="hint bad" id="firm-en" data-t="enOnly" hidden>Please write the name in English letters.</small>
           </div>
           <div class="field">
-            <label for="rq-name"><span class="pers-only" data-t="fName">Full name</span><span class="biz-only" data-t="fNameBiz" hidden>Contact person's full name</span></label>
-            <input id="rq-name" name="name" type="text" autocomplete="name" required>
-            <small class="hint" data-t="nameHint">As written on your ID (Aadhaar / PAN)</small>
+            <label for="rq-name"><span data-m="p" data-t="fName">Full name</span><span data-m="c" data-t="fNameKid" hidden>Child's full name</span><span data-m="b" data-t="fNameBiz" hidden>Contact person's full name</span></label>
+            <input id="rq-name" name="name" type="text" autocomplete="name" lang="en" required>
+            <small class="hint" data-m="pb" data-t="nameHint">In English, exactly as printed on your PAN / Aadhaar</small><small class="hint" data-m="c" data-t="nameHintKid" hidden>In English, exactly as on the birth certificate / Baal Aadhaar</small>
+            <small class="hint bad" id="name-en" data-t="enOnly" hidden>Please write the name in English letters.</small>
+          </div>
+          <div class="field" data-m="pc" id="dob-field">
+            <label for="rq-dob"><span data-m="p" data-t="fDob">Date of birth</span><span data-m="c" data-t="fDobKid" hidden>Child's date of birth</span></label>
+            <input id="rq-dob" name="dob" type="date" min="1900-01-01">
+            <small class="hint" data-m="p" data-t="dobHint">You must be at least 12 years old. For a younger child, choose "For my child".</small>
+            <small class="hint" data-m="c" data-t="dobHintKid" hidden>For children below 12 years. Children aged 12 or more can apply themselves.</small>
+          </div>
+          <div class="field" data-m="c" hidden>
+            <label for="rq-parent" data-t="fParent">Parent's full name</label>
+            <input id="rq-parent" name="parent" type="text" autocomplete="name" lang="en">
+            <small class="hint" data-t="parentHint">In English, exactly as on your own PAN / Aadhaar</small>
+            <small class="hint bad" id="parent-en" data-t="enOnly" hidden>Please write the name in English letters.</small>
+          </div>
+          <div class="field" data-m="c" hidden>
+            <label for="rq-rel" data-t="fRel">Your relation to the child</label>
+            <select id="rq-rel" name="relation" class="inp">
+              <option value="" data-t="relPick">Choose</option>
+              <option value="Father" data-t="relF">Father</option>
+              <option value="Mother" data-t="relM">Mother</option>
+              <option value="Legal guardian" data-t="relG">Legal guardian (only if parents are not there)</option>
+            </select>
           </div>
           <div class="field">
             <label for="rq-id" data-t="fAddr">Preferred address</label>
@@ -466,25 +507,39 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
               <input id="rq-id" name="preferred" type="text" placeholder="yourname" autocapitalize="none" spellcheck="false" required>
               <span>@espilamail.com</span>
             </div>
-            <p class="id-note pers-only" data-t="idNote">ⓘ Please choose an email ID based on your name as per your government ID, e.g. amitsharma or sangitasingh</p>
-            <p class="id-note biz-only" id="biz-note" data-t="idNoteBiz" hidden>ⓘ Please choose an email ID based on your firm's legal name, e.g. bharatenterprises or superstore</p>
+            <p class="id-note" data-m="p" data-t="idNote">ⓘ Please choose an email ID based on your name as per your government ID, e.g. amitsharma or sangitasingh</p>
+            <p class="id-note" data-m="c" data-t="idNoteKid" hidden>ⓘ Choose an email ID based on the child's name as per the birth certificate / Baal Aadhaar, e.g. aaravsharma</p>
+            <p class="id-note" data-m="b" id="biz-note" data-t="idNoteBiz" hidden>ⓘ Please choose an email ID based on your firm's legal name, e.g. bharatenterprises or superstore</p>
           </div>
-          <div class="doc-box biz-only" id="doc-box" hidden>
+          <div class="doc-box" data-m="c" hidden>
+            <b data-t="kidDocTitle">Documents needed for a child's ID</b>
+            <ul>
+              <li data-t="kidDoc1">Child's birth certificate (with name) or Baal Aadhaar</li>
+              <li data-t="kidDoc2">Your own ID (PAN / Aadhaar); your name must match the parent's name on the birth certificate</li>
+              <li data-t="kidDoc3">Legal guardian: court order or adoption deed as well</li>
+            </ul>
+            <p data-t="kidDocFoot">Please send these documents after sending this request. Documents are deleted after verification.</p>
+            <p class="doc-send"><span data-t="docWhere">Send documents to:</span> <a href="mailto:support@espilamail.com">support@espilamail.com</a></p>
+            <a class="doc-btn" href="mailto:support@espilamail.com" data-docmail><span aria-hidden="true">📎</span> <span data-t="docBtn">Send documents</span></a>
+          </div>
+          <div class="doc-box" data-m="b" id="doc-box" hidden>
             <b data-t="docTitle">Any one of these documents is needed for a business ID</b>
             <ul>
               <li data-t="doc1">Firm's PAN or GST certificate</li>
               <li data-t="doc2">Proprietorship: the owner's PAN (or Aadhaar) is enough</li>
               <li data-t="doc3">Udyam registration</li>
             </ul>
-            <p data-t="docFoot">After sending this request, please email one of these documents to support@espilamail.com. We will also ask you if anything else is needed.</p>
+            <p data-t="docFoot">Please send one of these documents after sending this request. We will also ask you if anything else is needed.</p>
+            <p class="doc-send"><span data-t="docWhere">Send documents to:</span> <a href="mailto:support@espilamail.com">support@espilamail.com</a></p>
+            <a class="doc-btn" href="mailto:support@espilamail.com" data-docmail><span aria-hidden="true">📎</span> <span data-t="docBtn">Send documents</span></a>
           </div>
           <div class="two">
             <div class="field">
-              <label for="rq-cur" data-t="fCur">Current email</label>
+              <label for="rq-cur"><span data-m="pb" data-t="fCur">Current email</span><span data-m="c" data-t="fCurKid" hidden>Parent's email</span></label>
               <input id="rq-cur" name="email" type="email" autocomplete="email" required>
             </div>
             <div class="field">
-              <label for="rq-mob" data-t="fMob">Mobile</label>
+              <label for="rq-mob"><span data-m="pb" data-t="fMob">Mobile</span><span data-m="c" data-t="fMobKid" hidden>Parent's mobile</span></label>
               <input id="rq-mob" name="mobile" type="tel" autocomplete="tel" placeholder="+91" required>
             </div>
           </div>
@@ -561,11 +616,11 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       signinBtn: "प्रवेश करें",
       forgot: "पासवर्ड भूल गए?", familyLink: "खाता बनवाएँ",
       back: "← साइन इन पर वापस", reqTitle: "खाता बनवाएँ", reqSub: "अपनी जानकारी भेजिए, हम आपका खाता बनाकर बताएँगे।",
-      nameHint: "जैसा आपके पहचान-पत्र (आधार / पैन) में लिखा है", idNote: "ⓘ कृपया अपने सरकारी पहचान-पत्र में लिखे नाम के अनुसार ही ईमेल आईडी चुनें, जैसे amitsharma या sangitasingh", idNoteBiz: "ⓘ कृपया अपनी फ़र्म के क़ानूनी नाम के अनुसार ही ईमेल आईडी चुनें, जैसे bharatenterprises या superstore",
-      typePersonal: "व्यक्तिगत", typeBusiness: "बिज़नेस / फ़र्म", fFirm: "फ़र्म / कंपनी का नाम", firmHint: "जैसा आपके GST / PAN / रजिस्ट्रेशन में लिखा है",
+      nameHint: "अंग्रेज़ी में, बिल्कुल वैसा जैसा आपके पैन / आधार पर छपा है", enOnly: "कृपया नाम अंग्रेज़ी अक्षरों में लिखें, जैसा पैन / आधार पर है।", idNote: "ⓘ कृपया अपने सरकारी पहचान-पत्र में लिखे नाम के अनुसार ही ईमेल आईडी चुनें, जैसे amitsharma या sangitasingh", idNoteBiz: "ⓘ कृपया अपनी फ़र्म के क़ानूनी नाम के अनुसार ही ईमेल आईडी चुनें, जैसे bharatenterprises या superstore",
+      typePersonal: "व्यक्तिगत", typeChild: "बच्चे के लिए", fNameKid: "बच्चे का पूरा नाम", nameHintKid: "अंग्रेज़ी में, बिल्कुल वैसा जैसा जन्म प्रमाण-पत्र / बाल आधार में है", fDob: "जन्म तिथि", fDobKid: "बच्चे की जन्म तिथि", dobHint: "आवेदक की उम्र कम से कम 12 वर्ष होनी चाहिए। इससे छोटे बच्चे के लिए \"बच्चे के लिए\" चुनें।", dobHintKid: "12 वर्ष से कम उम्र के बच्चों के लिए। 12 वर्ष या उससे बड़े बच्चे ख़ुद आवेदन कर सकते हैं।", fParent: "माता / पिता का पूरा नाम", parentHint: "अंग्रेज़ी में, बिल्कुल वैसा जैसा आपके अपने पैन / आधार पर है", fRel: "बच्चे से आपका रिश्ता", relPick: "चुनें", relF: "पिता", relM: "माता", relG: "क़ानूनी अभिभावक (सिर्फ़ जब माता-पिता न हों)", idNoteKid: "ⓘ बच्चे के जन्म प्रमाण-पत्र / बाल आधार में लिखे नाम के अनुसार ईमेल आईडी चुनें, जैसे aaravsharma", kidDocTitle: "बच्चे की आईडी के लिए ज़रूरी दस्तावेज़", kidDoc1: "बच्चे का जन्म प्रमाण-पत्र (नाम सहित) या बाल आधार", kidDoc2: "आपका अपना पहचान-पत्र (पैन / आधार); आपका नाम जन्म प्रमाण-पत्र में लिखे माता / पिता के नाम से मिलना चाहिए", kidDoc3: "क़ानूनी अभिभावक हों तो अदालत का आदेश या गोद लेने का क़ानूनी काग़ज़ भी", kidDocFoot: "अनुरोध भेजने के बाद ये दस्तावेज़ भेज दीजिए। जाँच के बाद दस्तावेज़ मिटा दिए जाते हैं।", docWhere: "दस्तावेज़ इस पते पर भेजें:", docBtn: "दस्तावेज़ भेजें", fCurKid: "माता / पिता का ईमेल", fMobKid: "माता / पिता का मोबाइल", cmAskKid: "बच्चे का नाम बिल्कुल वही लिखिए जो उसके जन्म प्रमाण-पत्र / बाल आधार में है।", cmNameKid: "बच्चे का नाम", cmAddrKid: "बच्चे का ईमेल पता", cmOkKid: "मैंने बच्चे के दस्तावेज़ से नाम मिला लिया है, और मैं बच्चे का माता / पिता / क़ानूनी अभिभावक हूँ", badDob: "कृपया सही जन्म तिथि भरें।", under12: "12 वर्ष से कम उम्र के लिए माता-पिता \"बच्चे के लिए\" चुनकर आवेदन करें।", kidOver: "12 वर्ष या उससे बड़े बच्चे \"व्यक्तिगत\" से ख़ुद आवेदन कर सकते हैं।", badParent: "कृपया माता / पिता का नाम और बच्चे से रिश्ता भरें।", typeBusiness: "बिज़नेस / फ़र्म", fFirm: "फ़र्म / कंपनी का नाम", firmHint: "अंग्रेज़ी में, बिल्कुल वैसा जैसा आपके GST / PAN / रजिस्ट्रेशन में है",
       docTitle: "बिज़नेस आईडी के लिए इनमें से कोई एक दस्तावेज़ चाहिए", doc1: "फ़र्म का PAN या GST प्रमाणपत्र",
       doc2: "प्रोप्राइटरशिप में मालिक का PAN (या आधार) काफ़ी है", doc3: "उद्यम (Udyam) रजिस्ट्रेशन",
-      docFoot: "अनुरोध भेजने के बाद कृपया इनमें से कोई एक दस्तावेज़ support@espilamail.com पर मेल कर दें। और कुछ चाहिए हुआ तो हम आपसे माँग लेंगे।",
+      docFoot: "अनुरोध भेजने के बाद इनमें से कोई एक दस्तावेज़ भेज दीजिए। और कुछ चाहिए हुआ तो हम आपसे माँग लेंगे।",
       badFirm: "कृपया फ़र्म / कंपनी का नाम लिखें।", fName: "पूरा नाम", fNameBiz: "संपर्क व्यक्ति का पूरा नाम", fAddr: "पसंदीदा पता", fCur: "मौजूदा ईमेल", fMob: "मोबाइल",
       fRef: "किसने भेजा", optional: "(वैकल्पिक)", send: "भेजें",
       waSame: "इसी नंबर पर मेरा WhatsApp है", fWa: "WhatsApp नंबर", waNote: "आपके खाते की जानकारी WhatsApp पर भेजी जाएगी।", badWa: "कृपया अपना WhatsApp नंबर लिखें।",
@@ -595,7 +650,12 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       sent: "Thank you! We'll be in touch soon.",
       failed: "Could not send your details. Please write to invite@espilamail.com.",
       badWa: "Please enter your WhatsApp number.",
-      badFirm: "Please enter your firm / company name."
+      badFirm: "Please enter your firm / company name.",
+      enOnly: "Please write the name in English letters, as on your PAN / Aadhaar.",
+      badDob: "Please enter a valid date of birth.",
+      under12: "For children below 12, a parent should apply using \"For my child\".",
+      kidOver: "Children aged 12 or more can apply themselves using \"Personal\".",
+      badParent: "Please enter the parent's name and relation to the child."
     }
   };
   var original = {};
@@ -970,22 +1030,50 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     if (!waSame.checked) { waIn.value = ""; waIn.readOnly = false; waIn.focus(); } else syncWa();
   });
   mobIn.addEventListener("input", function () { if (waSame.checked) syncWa(); });
-  var isBiz = false;
-  var tP = document.getElementById("type-personal"), tB = document.getElementById("type-business");
-  function setType(biz) {
-    isBiz = biz;
-    tP.setAttribute("aria-pressed", String(!biz)); tB.setAttribute("aria-pressed", String(biz));
-    document.querySelectorAll(".biz-only").forEach(function (e) { e.hidden = !biz; });
-    document.querySelectorAll(".pers-only").forEach(function (e) { e.hidden = biz; });
-    document.getElementById("rq-id").placeholder = biz ? "yourfirmname" : "yourname";
+  var isBiz = false, mode = "p";
+  var tP = document.getElementById("type-personal"), tB = document.getElementById("type-business"), tC = document.getElementById("type-child");
+  function setType(m) {
+    if (m === true) m = "b"; if (m === false) m = "p";
+    mode = m; isBiz = m === "b";
+    tP.setAttribute("aria-pressed", String(m === "p")); tB.setAttribute("aria-pressed", String(m === "b")); tC.setAttribute("aria-pressed", String(m === "c"));
+    document.querySelectorAll("[data-m]").forEach(function (e) { e.hidden = e.getAttribute("data-m").indexOf(m) < 0; });
+    document.getElementById("rq-id").placeholder = m === "b" ? "yourfirmname" : m === "c" ? "childname" : "yourname";
+  }
+  function ageOn(dob) {
+    var p = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dob || ""); if (!p) return null;
+    var n = new Date(), a = n.getFullYear() - +p[1];
+    if (n.getMonth() + 1 < +p[2] || (n.getMonth() + 1 === +p[2] && n.getDate() < +p[3])) a--;
+    return a;
   }
   var idIn = document.getElementById("rq-id");
   idIn.addEventListener("input", function () {
     var c = idIn.value.toLowerCase().replace(/[^a-z0-9]/g, "");
     if (c !== idIn.value) idIn.value = c;
   });
-  tP.addEventListener("click", function () { setType(false); });
-  tB.addEventListener("click", function () { setType(true); });
+  tP.addEventListener("click", function () { setType("p"); });
+  tB.addEventListener("click", function () { setType("b"); });
+  tC.addEventListener("click", function () { setType("c"); });
+  document.querySelectorAll("[data-docmail]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var hiL = document.documentElement.lang === "hi", id = (document.getElementById("rq-id").value || "").trim();
+      var sub = (hiL ? "दस्तावेज़: " : "Documents: ") + (id ? id + "@espilamail.com" : "") + (mode === "c" ? (hiL ? " (बच्चे का खाता)" : " (child account)") : mode === "b" ? (hiL ? " (बिज़नेस)" : " (business)") : "");
+      var body = hiL ? "कृपया दस्तावेज़ इस मेल के साथ जोड़ें (attach करें)।\n\nनाम: " + (document.getElementById("rq-name").value || "") : "Please attach the documents to this email.\n\nName: " + (document.getElementById("rq-name").value || "");
+      location.href = "mailto:support@espilamail.com?subject=" + encodeURIComponent(sub) + "&body=" + encodeURIComponent(body);
+    });
+  });
+  (function () { var t = new Date(); document.getElementById("rq-dob").max = t.toISOString().slice(0, 10); })();
+  // नाम सिर्फ़ अंग्रेज़ी अक्षरों में (पैन / आधार की तरह), ताकि ईमेल पते से पक्का मिलान हो सके
+  var EN_NAME = /^[A-Za-z][A-Za-z .'\-&()]*$/;
+  function enCheck() {
+    [["rq-name", "name-en"], ["rq-firm", "firm-en"], ["rq-parent", "parent-en"]].forEach(function (p) {
+      var v = document.getElementById(p[0]).value.trim();
+      document.getElementById(p[1]).hidden = !v || EN_NAME.test(v);
+    });
+  }
+  document.getElementById("rq-name").addEventListener("input", enCheck);
+  document.getElementById("rq-firm").addEventListener("input", enCheck);
+  document.getElementById("rq-parent").addEventListener("input", enCheck);
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
     var d = {
@@ -994,12 +1082,26 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       email: form.email.value.trim(),
       mobile: form.mobile.value.trim(),
       referred_by: form.referred_by.value.trim(),
-      type: isBiz ? "Business" : "Personal",
-      firm: isBiz ? form.firm.value.trim() : ""
+      type: mode === "b" ? "Business" : mode === "c" ? "Child (by parent)" : "Personal",
+      firm: isBiz ? form.firm.value.trim() : "",
+      dob: mode === "b" ? "" : form.dob.value,
+      parent: mode === "c" ? form.parent.value.trim() : "",
+      relation: mode === "c" ? form.relation.value : ""
     };
     d.whatsapp = waIn.value.trim();
     if (!d.name || !d.preferred || !d.email || !d.mobile) return show(msg("missing"), true);
     if (isBiz && !d.firm) return show(msg("badFirm"), true);
+    if (!EN_NAME.test(d.name) || (isBiz && !EN_NAME.test(d.firm))) { enCheck(); return show(msg("enOnly"), true); }
+    if (mode !== "b") {
+      var age = ageOn(d.dob);
+      if (age === null || age < 0 || age > 120) return show(msg("badDob"), true);
+      if (mode === "p" && age < 12) return show(msg("under12"), true);
+      if (mode === "c" && age >= 12) return show(msg("kidOver"), true);
+    }
+    if (mode === "c") {
+      if (!d.parent || !d.relation) return show(msg("badParent"), true);
+      if (!EN_NAME.test(d.parent)) { enCheck(); return show(msg("enOnly"), true); }
+    }
     if (!d.whatsapp) return show(msg("badWa"), true);
     if (!/^[a-z0-9]{1,40}$/.test(d.preferred)) return show(msg("badAddr"), true);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return show(msg("badEmail"), true);
@@ -1010,6 +1112,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
   function cmClose() { cm.hidden = true; document.body.style.overflow = ""; pending = null; }
   function confirmThen(d) {
     pending = d; lastFocus = document.activeElement;
+    var fs = document.getElementById("form-status"); if (fs) fs.textContent = "";
     document.getElementById("cm-name").textContent = isBiz ? d.firm : d.name;
     document.getElementById("cm-addr").textContent = d.preferred + "@espilamail.com";
     var mis = nameGap(isBiz ? d.firm : d.name, d.preferred), mEl = document.getElementById("cm-mis");
@@ -1018,6 +1121,11 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       mEl.textContent = hiL
         ? "ध्यान दें: ईमेल पते में ‘" + mis.title + "’ जैसी उपाधि सीधे नहीं जोड़ी जाती। इसके लिए अलग से अनुरोध और दस्तावेज़ भेजने होंगे। अभी पते से इसे हटाकर भेजिए।"
         : "Note: a title like ‘" + mis.title + "’ is not added to the email address directly. It needs a separate request with documents. Please remove it from the address for now.";
+      mEl.hidden = false;
+    } else if (mis.spell) {
+      mEl.textContent = mis.sure
+        ? (hiL ? "ध्यान दें: ईमेल पता (" + d.preferred + ") आपके नाम से मेल नहीं खाता। वर्तनी एक बार देख लीजिए।" : "Note: the email address (" + d.preferred + ") does not match your name. Please check the spelling.")
+        : (hiL ? "ध्यान दें: लगता है ईमेल पता (" + d.preferred + ") आपके नाम से मेल नहीं खाता। वर्तनी एक बार देख लीजिए।" : "Note: it looks like the email address (" + d.preferred + ") does not match your name. Please check the spelling.");
       mEl.hidden = false;
     } else if (mis.words.length) {
       var q = mis.words.map(function (w) { return "‘" + w + "’"; }).join(", ");
@@ -1034,8 +1142,8 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
   var SKIP = /^(pvt|private|ltd|limited|llp|and|the|of|co|inc|dr|doctor|er|adv|advocate|prof|ca|mr|mrs|ms|shri|sri|smt|प्राइवेट|प्रा|लिमिटेड|लि|एंड|एवं|और|डॉ|डॉक्टर|डा|इंजी|एडवोकेट|प्रो|श्री|श्रीमती|सुश्री)$/i;
   // विशेष उपाधि (Dr, Er, Adv, Prof, CA) पते में अपने-आप नहीं: उसके लिए अलग अनुरोध और दस्तावेज़
   var TITLES = [[/^(dr|doctor|डॉ|डॉक्टर|डा)$/i, /^(dr|doctor)/], [/^(er|इंजी)$/i, /^er/], [/^(adv|advocate|एडवोकेट)$/i, /^adv/], [/^(prof|प्रो)$/i, /^prof/], [/^ca$/i, /^ca/]];
-  var DEV = { "क":"k","ख":"k","ग":"g","घ":"g","च":"c","छ":"c","ज":"j","झ":"j","ट":"t","ठ":"t","ड":"d","ढ":"d","ण":"n","त":"t","थ":"t","द":"d","ध":"d","न":"n","प":"p","फ":"p","ब":"b","भ":"b","म":"m","य":"y","र":"r","ल":"l","व":"v","श":"s","ष":"s","स":"s","ऋ":"r","ृ":"r","ड़":"d","ढ़":"d","क़":"k","ख़":"k","ग़":"g","ज़":"s","फ़":"p","य़":"y" };
-  function latSkel(t) { return t.toLowerCase().replace(/[^a-z]/g, "").replace(/x/g, "ks").replace(/q/g, "k").replace(/z/g, "s").replace(/f/g, "p").replace(/w/g, "v").replace(/[aeiouh]/g, ""); }
+  var DEV = { "क":"k","ख":"k","ग":"g","घ":"g","च":"c","छ":"c","ज":"j","झ":"j","ट":"t","ठ":"t","ड":"d","ढ":"d","ण":"n","त":"t","थ":"t","द":"d","ध":"d","न":"n","प":"p","फ":"p","ब":"b","भ":"b","म":"m","य":"y","र":"r","ल":"l","व":"v","श":"s","ष":"s","स":"s","ऋ":"r","ृ":"r","ड़":"d","ढ़":"d","क़":"k","ख़":"k","ग़":"g","ज़":"s","फ़":"p","य़":"y", "ं":"n" };
+  function latSkel(t) { return t.toLowerCase().replace(/[^a-z]/g, "").replace(/x/g, "ks").replace(/q/g, "k").replace(/z/g, "s").replace(/f/g, "p").replace(/w/g, "v").replace(/[aeiouhy]/g, "").replace(/m(?=[bp])/g, "n").replace(/(.)\1+/g, "$1"); }
   function devSkel(t) {
     t = t.normalize("NFC").replace(/ज्ञ/g, "\u0001");
     var o = "";
@@ -1043,13 +1151,23 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
       var c = t[i], n = t[i + 1];
       if (c === "\u0001") { o += "g"; continue; }
       if (n === "\u093C") { c = c + n; i++; }
+      if (c === "ं" && n === "ह") { o += "ng"; continue; }
       if (DEV[c]) o += DEV[c];
     }
-    return o;
+    return o.replace(/y/g, "").replace(/(.)\1+/g, "$1");
   }
   function subseq(a, b) { var j = 0; for (var i = 0; i < b.length && j < a.length; i++) if (b[i] === a[j]) j++; return j === a.length; }
+  // पता क्या नाम के शब्दों को जोड़कर ही बना है? (क्रम कोई भी, अंक छूट)
+  function seg(str, parts) {
+    if (!str) return true;
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      if (p && str.indexOf(p) === 0) { var rest = parts.slice(); rest[i] = ""; if (seg(str.slice(p.length), rest)) return true; }
+    }
+    return false;
+  }
   function nameGap(name, id) {
-    var out = { words: [], sure: true, title: "" }; id = String(id || "").toLowerCase();
+    var out = { words: [], sure: true, title: "", spell: false }; id = String(id || "").toLowerCase();
     var all = String(name || "").split(/[\s.,'’\-\/&()]+/).filter(Boolean);
     all.forEach(function (w) { TITLES.forEach(function (t) { var m = t[1].exec(id); if (!out.title && t[0].test(w) && m) out.title = m[0]; }); });
     var words = all.filter(function (w) { return !SKIP.test(w); });
@@ -1057,9 +1175,15 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     if (/[\u0900-\u097F]/.test(name)) {
       out.sure = false;
       var ids = latSkel(id);
-      words.forEach(function (w) { var k = devSkel(w); if (k.length >= 2 && !subseq(k, ids)) out.words.push(w); });
+      var sk = words.map(devSkel);
+      words.forEach(function (w, i) { if (sk[i].length >= 2 && !subseq(sk[i], ids)) out.words.push(w); });
+      if (!out.words.length && ids && !seg(out.title ? latSkel(id.slice(out.title.length)) : ids, sk)) out.spell = true;
     } else {
-      words.forEach(function (w) { var l = w.toLowerCase().replace(/[^a-z]/g, ""); if (l.length >= 2 && id.indexOf(l) < 0) out.words.push(w); });
+      var lw = words.map(function (w) { return w.toLowerCase().replace(/[^a-z]/g, ""); });
+      lw.forEach(function (l, i) { if (l.length >= 2 && id.indexOf(l) < 0) out.words.push(words[i]); });
+      var bare = id.replace(/[0-9]/g, "");
+      if (out.title) bare = bare.slice(out.title.length);
+      if (!out.words.length && bare && !seg(bare, lw)) out.spell = true;
     }
     return out;
   }
@@ -1075,7 +1199,9 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
     var body =
       "Type: " + d.type + "\n" +
       (isBiz ? "Firm name: " + d.firm + "\n" : "") +
-      "Name: " + d.name + "\n" +
+      (mode === "c" ? "Child's name: " : "Name: ") + d.name + "\n" +
+      (d.dob ? (mode === "c" ? "Child's date of birth: " : "Date of birth: ") + d.dob.split("-").reverse().join("-") + "\n" : "") +
+      (mode === "c" ? "Parent / guardian: " + d.parent + " (" + d.relation + ")\n" : "") +
       "Preferred address: " + d.preferred + "@espilamail.com\n" +
       "Current email: " + d.email + "\n" +
       "Mobile: " + d.mobile + "\n" +
@@ -1084,7 +1210,7 @@ footer nav a{color:var(--muted);min-height:24px;display:inline-flex;align-items:
 
     if (!FORM_ENDPOINT) {
       window.location.href = "mailto:" + INVITE_TO +
-        "?subject=" + encodeURIComponent("Espila family" + (isBiz ? " (Business)" : "") + ": " + d.preferred + "@espilamail.com") +
+        "?subject=" + encodeURIComponent("Espila family" + (isBiz ? " (Business)" : mode === "c" ? " (Child)" : "") + ": " + d.preferred + "@espilamail.com") +
         "&body=" + encodeURIComponent(body);
       return show(msg("opened"), false);
     }
